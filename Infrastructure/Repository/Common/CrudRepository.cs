@@ -1,0 +1,41 @@
+using EventsBookingBackend.Domain.Common.Entities;
+using EventsBookingBackend.Domain.Common.Repositories;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace EventsBookingBackend.Infrastructure.Repository.Common
+{
+    public class CrudRepository<TEntity, TContext>(TContext context) : ICrudRepository<TEntity>
+        where TEntity : BaseEntity
+        where TContext : DbContext
+    {
+        protected readonly DbSet<TEntity> DbSet = context.Set<TEntity>();
+
+        public async Task<TEntity> Create(TEntity entity)
+        {
+            await DbSet.AddAsync(entity);
+            await context.SaveChangesAsync();
+            return entity;
+        }
+
+        public async Task<TEntity> Update(TEntity entity)
+        {
+            context.Attach(entity).State = EntityState.Modified;
+            await context.SaveChangesAsync();
+            return entity;
+        }
+
+        public async Task<bool> Delete(TEntity entity)
+        {
+            var rows = await DbSet.Where(e => e.Id == entity.Id)
+                .ExecuteUpdateAsync(setPropertyCalls => setPropertyCalls.SetProperty(e => e.IsDeleted, true));
+            return rows >= 1;
+        }
+
+        public Task<List<TEntity>> FindAll()
+        {
+            return DbSet.AsNoTracking().ToListAsync();
+        }
+    }
+}

@@ -1,0 +1,6 @@
+dotnet ef migrations add MigrateAll --context AuthDbContext --output-dir ./Migrations/Auth
+dotnet ef migrations add MigrateAll --context UserDbContext --output-dir ./Migrations/User
+dotnet ef migrations add MigrateAll --context BookingDbContext --output-dir ./Migrations/Booking
+dotnet ef migrations add MigrateAll --context CategoryDbContext --output-dir ./Migrations/Category
+dotnet ef migrations add MigrateAll --context EventDbContext --output-dir ./Migrations/Event
+dotnet ef migrations add MigrateAll --context ReviewDbContext --output-dir ./Migrations/Review
