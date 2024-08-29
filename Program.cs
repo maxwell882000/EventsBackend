@@ -1,9 +1,13 @@
+using System.Globalization;
 using System.Security.Claims;
 using EventsBookingBackend.DependencyInjections;
-using EventsBookingBackend.Infrastructure.EntityFramework.DbContexts;
+using EventsBookingBackend.Infrastructure.Persistence.DbContexts;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,29 +16,23 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
 builder.Services.AddAuth();
 builder.Services.AddDatabases(builder.Configuration);
 builder.Services.AddRepositories();
 builder.Services.AddApplicationServices();
 builder.Services.AddCommonExtensions();
-
-var app = builder.Build();
-
-app.MapGet("/login", (string username) =>
+builder.Services.AddServices();
+builder.Services.AddOptions(builder.Configuration);
+// builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
-    var claimsPrincipal = new ClaimsPrincipal(
-        new ClaimsIdentity(
-            new[] { new Claim(ClaimTypes.Name, username) },
-            BearerTokenDefaults.AuthenticationScheme
-        )
-    );
-
-    return Results.SignIn(claimsPrincipal);
+    var supportedCultures = new[] { new CultureInfo("ru") };
+    options.DefaultRequestCulture = new RequestCulture("ru");
+    options.SupportedCultures = supportedCultures;
+    options.SupportedUICultures = supportedCultures;
 });
-
-app.MapGet("/user", (ClaimsPrincipal user) => { return Results.Ok($"Welcome {user.Identity.Name}!"); })
-    .RequireAuthorization();
+var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -49,11 +47,30 @@ using (var scope = app.Services.CreateScope())
     dbContext.Database.Migrate();
 }
 
+// Configure the HTTP request pipeline.
+var supportedCultures = new[] { new CultureInfo("ru") };
+app.UseRequestLocalization(new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture("ru"),
+    SupportedCultures = supportedCultures,
+    SupportedUICultures = supportedCultures
+});
+
+var localizationOptions = new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture("ru"),
+    SupportedCultures = supportedCultures,
+    SupportedUICultures = supportedCultures
+};
+app.UseRequestLocalization(localizationOptions);
+
+
 app.UseMiddlewares();
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
+// app.UseAuthorization();
+app.UseAuthentication();
 
 app.MapControllers();
 

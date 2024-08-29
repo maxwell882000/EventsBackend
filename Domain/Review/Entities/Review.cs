@@ -1,4 +1,5 @@
 using EventsBookingBackend.Domain.Common.Entities;
+using EventsBookingBackend.Domain.Common.ValueObjects;
 
 namespace EventsBookingBackend.Domain.Review.Entities;
 
@@ -8,5 +9,5 @@ public class Review : BaseEntity
     public Guid EventId { get; set; }
     public int Mark { get; set; }
     public string Comment { get; set; }
-    public List<string> MediaFiles { get; set; }
+    public List<FileValueObject> MediaFiles { get; set; }
 }

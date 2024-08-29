@@ -10,7 +10,7 @@ public class PhoneAttribute : ValidationAttribute
     {
         if (!IsValid(value))
         {
-            throw new AppValidationException("Invalid phone number");
+            throw new AppValidationException("Номер телефона указан в не правильном формате");
         }
 
         return null;

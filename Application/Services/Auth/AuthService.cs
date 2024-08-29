@@ -1,9 +1,12 @@
+using System.Security.Claims;
+using System.Transactions;
 using AutoMapper;
 using EventsBookingBackend.Application.Common.Exceptions;
 using EventsBookingBackend.Application.Models.Auth.Requests;
 using EventsBookingBackend.Application.Models.Auth.Responses;
 using EventsBookingBackend.Domain.User.Entities;
 using EventsBookingBackend.Domain.User.Repositories;
+using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.Data;
@@ -11,40 +14,55 @@ using Microsoft.AspNetCore.Identity.Data;
 namespace EventsBookingBackend.Application.Services.Auth;
 
 public class AuthService(
-    UserManager<Domain.Auth.Entities.Auth> userManager,
+    UserManager<Domain.Auth.Entities.Auth?> userManager,
     IUserRepository userRepository,
-    IMapper mapper) // Add DbContext to manage transactions
+    SignInManager<Domain.Auth.Entities.Auth> signInManager,
+    ILogger<AuthService> logger,
+    IHttpContextAccessor httpContextAccessor,
+    IMapper mapper)
     : IAuthService
 {
-    public async Task<AuthRegisterResponse> Register(AuthRegisterRequest request)
+    public async Task<ClaimsPrincipal> Login(AuthLoginRequest request)
+    {
+        var result = await signInManager.PasswordSignInAsync(request.Phone!, request.Password!, false, false);
+
+        if (result.Succeeded)
+        {
+            var auth = (await userManager.FindByNameAsync(request.Phone!))!;
+            return auth.GetPrincipal;
+        }
+
+        throw new AppValidationException("Не правильный пароль или номер телефона");
+    }
+
+    public async Task<Domain.Auth.Entities.Auth?> GetCurrentAuthUser()
+    {
+        var user = httpContextAccessor.HttpContext?.User;
+
+        return await userManager.GetUserAsync(user!);
+    }
+
+    public async Task<ClaimsPrincipal> Register(AuthRegisterRequest request)
     {
         if (request.Password != request.RepeatPassword)
-            throw new AppValidationException("Passwords do not match");
+            throw new AppValidationException("Пароли не совпадают");
 
         // using var transaction = await dbContext.Database.BeginTransactionAsync();
-
-        try
+        using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
         {
-            // Create the auth entity
-            var authResult = await userManager.CreateAsync(mapper.Map<Domain.Auth.Entities.Auth>(request));
-            if (!authResult.Succeeded)
+            var auth = mapper.Map<Domain.Auth.Entities.Auth>(request);
+            var result = await userManager.CreateAsync(auth, request.Password!);
+            if (result.Succeeded)
             {
-                throw new AppValidationException(string.Join(", ", authResult.Errors.Select(e => e.Description)));
+                var user = mapper.Map<User>(request);
+                user.Id = auth.Id;
+                await userRepository.Create(user);
+                transactionScope.Complete();
+                return auth.GetPrincipal;
             }
 
-            // Create the user entity
-            await userRepository.Create(mapper.Map<User>(request));
-
-            // Commit the transaction
-            // await transaction.CommitAsync();
-
-            return new AuthRegisterResponse();
-        }
-        catch
-        {
-            // Rollback the transaction in case of an error
-            // await transaction.RollbackAsync();
-            throw;
+            throw new AppValidationException(result.Errors.Select(e => e.Description).FirstOrDefault() ??
+                                             "Не удалось создать пользователя");
         }
     }
 }

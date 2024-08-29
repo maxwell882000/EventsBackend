@@ -5,3 +5,4 @@ dotnet ef database update --context BookingDbContext
 dotnet ef database update --context CategoryDbContext
 dotnet ef database update --context EventDbContext
 dotnet ef database update --context ReviewDbContext
+dotnet ef database update --context FileDbContext

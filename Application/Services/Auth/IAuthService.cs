@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using EventsBookingBackend.Application.Models.Auth.Requests;
 using EventsBookingBackend.Application.Models.Auth.Responses;
 
@@ -5,5 +6,7 @@ namespace EventsBookingBackend.Application.Services.Auth;
 
 public interface IAuthService
 {
-    public Task<AuthRegisterResponse> Register(AuthRegisterRequest request);
+    public Task<ClaimsPrincipal> Register(AuthRegisterRequest request);
+    public Task<ClaimsPrincipal> Login(AuthLoginRequest request);
+    public Task<Domain.Auth.Entities.Auth?> GetCurrentAuthUser();
 }

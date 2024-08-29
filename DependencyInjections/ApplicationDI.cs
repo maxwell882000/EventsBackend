@@ -1,6 +1,8 @@
 using EventsBookingBackend.Application.Common.Middlewares;
 using EventsBookingBackend.Application.Services.Auth;
+using EventsBookingBackend.Infrastructure.Identity;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
 
 namespace EventsBookingBackend.DependencyInjections;
@@ -14,11 +16,40 @@ public static class ApplicationDi
 
     public static void UseMiddlewares(this IApplicationBuilder services)
     {
-        services.UseMiddleware<ExceptionMiddleware>();
+        // services.UseMiddleware<ExceptionMiddleware>();
     }
 
     public static void AddCommonExtensions(this IServiceCollection services)
     {
+        services.AddHttpContextAccessor();
+        services.AddSwaggerGen(c =>
+        {
+            // Define the BearerAuth scheme
+            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Name = "Authorization",
+                Type = SecuritySchemeType.ApiKey,
+                Scheme = "Bearer",
+                BearerFormat = "JWT",
+                In = ParameterLocation.Header,
+                Description = "Please enter a valid token",
+            });
+            // Require the BearerAuth scheme for the API
+            c.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    Array.Empty<string>()
+                }
+            });
+        });
         services.AddControllers(options =>
             {
                 options.Conventions.Add(new RouteTokenTransformerConvention(new SnakeCaseRoutingConvention()));
@@ -27,8 +58,11 @@ public static class ApplicationDi
             {
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver
                 {
-                    NamingStrategy = new SnakeCaseNamingStrategy()
+                    NamingStrategy = new CamelCaseNamingStrategy()
                 };
+                options.SerializerSettings.Converters.Add(new JsonClaimConverter());
+                options.SerializerSettings.Converters.Add(new JsonClaimsPrincipalConverter());
+                options.SerializerSettings.Converters.Add(new JsonClaimsIdentityConverter());
             });
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
     }
