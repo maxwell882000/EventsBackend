@@ -1,6 +1,6 @@
 using EventsBookingBackend.Domain.Files.Repositories;
 using EventsBookingBackend.Infrastructure.Persistence.DbContexts;
-using EventsBookingBackend.Infrastructure.Repository.Common;
+using EventsBookingBackend.Infrastructure.Repositories.Common;
 
 namespace EventsBookingBackend.Infrastructure.Repositories.File;
 

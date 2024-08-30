@@ -1,5 +1,7 @@
 using System.Text.RegularExpressions;
 
+namespace EventsBookingBackend.Api.Conventions;
+
 public class SnakeCaseRoutingConvention : IOutboundParameterTransformer
 {
     public string? TransformOutbound(object? value)

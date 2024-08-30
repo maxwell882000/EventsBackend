@@ -26,9 +26,11 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Api\ControllerOptions\" />
       <Folder Include="Application\Models\Event\Requests\" />
       <Folder Include="Application\Services\Review\" />
       <Folder Include="Application\Services\User\" />
+      <Folder Include="Domain\Auth\Services\" />
       <Folder Include="Domain\Category\Services\" />
       <Folder Include="Domain\Event\Services\" />
       <Folder Include="Domain\Review\Services\" />

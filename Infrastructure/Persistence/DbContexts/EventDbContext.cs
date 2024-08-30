@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EventsBookingBackend.Infrastructure.Persistence.DbContexts;
 
-public class EventDbContext(DbContextOptions<EventDbContext> options)  : BaseDbContext<EventDbContext>(options)
+public class EventDbContext(DbContextOptions<EventDbContext> options) : BaseDbContext<EventDbContext>(options)
 {
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -13,9 +13,9 @@ public class EventDbContext(DbContextOptions<EventDbContext> options)  : BaseDbC
         modelBuilder.HasDefaultSchema("events");
         modelBuilder.ApplyConfiguration(new EventConfiguration());
         modelBuilder.ApplyConfiguration(new EventLikedConfiguration());
-
     }
 
     public DbSet<Event> Events { get; init; }
+    public DbSet<EventAggregatedReview> EventAggregatedReviews { get; init; }
     public DbSet<LikedEvent> LikedEvents { get; init; }
 }

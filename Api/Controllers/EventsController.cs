@@ -1,32 +1,19 @@
 using EventsBookingBackend.Application.Common;
+using EventsBookingBackend.Application.Models.Common;
+using EventsBookingBackend.Application.Models.Event.Responses;
+using EventsBookingBackend.Application.Services.Event;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EventsBookingBackend.Api.Controllers;
 
-public class EventsController : AppBaseController
-
+[Authorize]
+public class EventsController(IEventService eventService) : AppBaseController
 {
-    private static readonly string[] Summaries = new[]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [HttpGet("get-all-events")]
+    public async Task<ActionResult<IList<GetAllEventsResponse>>> GetAllEvents()
     {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
-
-    private readonly ILogger<EventsController> _logger;
-
-    public EventsController(ILogger<EventsController> logger)
-    {
-        _logger = logger;
-    }
-
-    [HttpGet(Name = "GetWeatherForecast")]
-    public ActionResult<IEnumerable<WeatherForecast>> Get()
-    {
-        return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
+        return Ok(await eventService.GetAllEvents());
     }
 }

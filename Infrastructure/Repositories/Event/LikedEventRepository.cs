@@ -1,10 +1,10 @@
 using EventsBookingBackend.Domain.Event.Entities;
 using EventsBookingBackend.Domain.Event.Repositories;
 using EventsBookingBackend.Infrastructure.Persistence.DbContexts;
-using EventsBookingBackend.Infrastructure.Repository.Common;
+using EventsBookingBackend.Infrastructure.Repositories.Common;
 using Microsoft.EntityFrameworkCore;
 
-namespace EventsBookingBackend.Infrastructure.Repository.Event;
+namespace EventsBookingBackend.Infrastructure.Repositories.Event;
 
 public class LikedEventRepository(EventDbContext context) : ILikedEventRepository
 {

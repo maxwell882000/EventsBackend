@@ -1,3 +1,4 @@
+using EventsBookingBackend.Domain.Event.Entities;
 using EventsBookingBackend.Infrastructure.Persistence.Configurations.Base;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using EventEntity = EventsBookingBackend.Domain.Event.Entities.Event;
@@ -16,5 +17,8 @@ public class EventConfiguration : BaseEntityConfiguration<EventEntity>
         });
         builder.OwnsOne(e => e.PreviewImage);
         builder.OwnsMany(e => e.Images);
+        builder.HasOne(e => e.AggregatedReviews)
+            .WithOne(e => e.Event)
+            .HasForeignKey<EventAggregatedReview>(e => e.EventId);
     }
 }

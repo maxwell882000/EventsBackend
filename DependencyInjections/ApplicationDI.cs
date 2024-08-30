@@ -1,6 +1,9 @@
+using EventsBookingBackend.Api.ControllerOptions.Filters;
+using EventsBookingBackend.Api.Conventions;
+using EventsBookingBackend.Api.Identity;
 using EventsBookingBackend.Application.Common.Middlewares;
 using EventsBookingBackend.Application.Services.Auth;
-using EventsBookingBackend.Infrastructure.Identity;
+using EventsBookingBackend.Application.Services.Event;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
@@ -12,6 +15,7 @@ public static class ApplicationDi
     public static void AddApplicationServices(this IServiceCollection services)
     {
         services.AddTransient<IAuthService, AuthService>();
+        services.AddTransient<IEventService, EventService>();
     }
 
     public static void UseMiddlewares(this IApplicationBuilder services)
@@ -24,6 +28,7 @@ public static class ApplicationDi
         services.AddHttpContextAccessor();
         services.AddSwaggerGen(c =>
         {
+            c.OperationFilter<SwaggerProducesResponseTypesFilter>();
             // Define the BearerAuth scheme
             c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
@@ -52,6 +57,7 @@ public static class ApplicationDi
         });
         services.AddControllers(options =>
             {
+                options.Filters.Add(new ProducesResponseTypesFilter());
                 options.Conventions.Add(new RouteTokenTransformerConvention(new SnakeCaseRoutingConvention()));
             })
             .AddNewtonsoftJson(options =>

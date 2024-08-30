@@ -1,4 +1,5 @@
 using AutoMapper;
+using EventsBookingBackend.Application.Models.Auth.Dto;
 using EventsBookingBackend.Application.Models.Auth.Requests;
 using EventsBookingBackend.Domain.User.Entities;
 
@@ -12,5 +13,6 @@ public class AuthProfile : Profile
             .ForMember(e => e.UserName, src => src.MapFrom(e => e.Phone))
             .ForMember(e => e.PhoneNumber, src => src.MapFrom(e => e.Phone));
         CreateMap<AuthRegisterRequest, User>();
+        CreateMap<Domain.Auth.Entities.Auth, AuthDto>();
     }
 }

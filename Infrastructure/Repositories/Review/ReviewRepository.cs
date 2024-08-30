@@ -2,7 +2,7 @@ using EventsBookingBackend.Domain.Review.Repositories;
 using EventsBookingBackend.Infrastructure.Persistence.DbContexts;
 using Microsoft.EntityFrameworkCore;
 
-namespace EventsBookingBackend.Infrastructure.Repository.Review;
+namespace EventsBookingBackend.Infrastructure.Repositories.Review;
 
 public class ReviewRepository(ReviewDbContext context) : IReviewRepository
 {

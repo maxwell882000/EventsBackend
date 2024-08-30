@@ -14,7 +14,6 @@ namespace EventsBookingBackend.Api.Controllers;
 public class AuthController(IAuthService authService) : AppBaseController
 {
     [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status500InternalServerError)]
     [HttpPost("register")]
     public async Task<SignInResult> Register(
         [FromBody] AuthRegisterRequest request
@@ -25,7 +24,6 @@ public class AuthController(IAuthService authService) : AppBaseController
     }
 
     [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status500InternalServerError)]
     [HttpPost("login")]
     public async Task<SignInResult> Login(
         [FromBody] AuthLoginRequest request
@@ -37,7 +35,6 @@ public class AuthController(IAuthService authService) : AppBaseController
 
     [Authorize]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status500InternalServerError)]
     [HttpGet("get-user")]
     public async Task<IActionResult> GetUser()
     {

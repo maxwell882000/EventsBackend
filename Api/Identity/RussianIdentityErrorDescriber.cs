@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 
+namespace EventsBookingBackend.Api.Identity;
+
 public class RussianIdentityErrorDescriber : IdentityErrorDescriber
 {
     public override IdentityError DefaultError() => new IdentityError

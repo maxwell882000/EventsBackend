@@ -1,13 +1,23 @@
+using AutoMapper;
 using EventsBookingBackend.Application.Models.Event.Responses;
+using EventsBookingBackend.Application.Services.Auth;
 using EventsBookingBackend.Domain.Event.Repositories;
+using EventsBookingBackend.Domain.Event.Specifications;
 using EventsBookingBackend.Domain.Review.Repositories;
 
 namespace EventsBookingBackend.Application.Services.Event;
 
-public class EventService(IEventRepository eventRepository, IReviewRepository reviewRepository) : IEventService
+public class EventService(
+    IEventRepository eventRepository,
+    IMapper mapper,
+    IAuthService service)
+    : IEventService
 {
-    public Task<IList<GetAllEventsResponse>> GetAllEvents()
+    public async Task<IList<GetAllEventsResponse>> GetAllEvents()
     {
-        throw new NotImplementedException();
+        var events =
+            await eventRepository.FindAll(new GetAllEventsSpecification((await service.GetCurrentAuthUser()).Id));
+
+        return mapper.Map<List<GetAllEventsResponse>>(events);
     }
 }

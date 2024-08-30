@@ -2,7 +2,7 @@ using System.Security.Claims;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace EventsBookingBackend.Infrastructure.Identity
+namespace EventsBookingBackend.Api.Identity
 {
     public class JsonClaimsIdentityConverter : JsonConverter
     {

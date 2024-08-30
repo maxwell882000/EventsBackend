@@ -3,8 +3,9 @@ using EventsBookingBackend.Domain.Common.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using EventsBookingBackend.Domain.Common.Specifications;
 
-namespace EventsBookingBackend.Infrastructure.Repository.Common
+namespace EventsBookingBackend.Infrastructure.Repositories.Common
 {
     public class CrudRepository<TEntity, TContext>(TContext context) : ICrudRepository<TEntity>
         where TEntity : BaseEntity
@@ -33,9 +34,16 @@ namespace EventsBookingBackend.Infrastructure.Repository.Common
             return rows >= 1;
         }
 
-        public Task<List<TEntity>> FindAll()
+        public async Task<List<TEntity>> FindAll(ISpecification<TEntity>? specification = null)
         {
-            return DbSet.AsNoTracking().ToListAsync();
+            if (specification != null)
+                return await specification.Apply(context.Set<TEntity>()).ToListAsync();
+            return await DbSet.AsNoTracking().ToListAsync();
+        }
+
+        public async Task<TEntity?> FindFirst(ISpecification<TEntity> specification)
+        {
+            return await specification.Apply(context.Set<TEntity>()).FirstOrDefaultAsync();
         }
     }
 }

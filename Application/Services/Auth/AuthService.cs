@@ -2,6 +2,7 @@ using System.Security.Claims;
 using System.Transactions;
 using AutoMapper;
 using EventsBookingBackend.Application.Common.Exceptions;
+using EventsBookingBackend.Application.Models.Auth.Dto;
 using EventsBookingBackend.Application.Models.Auth.Requests;
 using EventsBookingBackend.Application.Models.Auth.Responses;
 using EventsBookingBackend.Domain.User.Entities;
@@ -35,11 +36,11 @@ public class AuthService(
         throw new AppValidationException("Не правильный пароль или номер телефона");
     }
 
-    public async Task<Domain.Auth.Entities.Auth?> GetCurrentAuthUser()
+    public async Task<AuthDto> GetCurrentAuthUser()
     {
         var user = httpContextAccessor.HttpContext?.User;
 
-        return await userManager.GetUserAsync(user!);
+        return mapper.Map<AuthDto>(await userManager.GetUserAsync(user!));
     }
 
     public async Task<ClaimsPrincipal> Register(AuthRegisterRequest request)
