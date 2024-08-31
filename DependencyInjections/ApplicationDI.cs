@@ -5,6 +5,7 @@ using EventsBookingBackend.Api.Identity;
 using EventsBookingBackend.Api.Options;
 using EventsBookingBackend.Application.Common.Middlewares;
 using EventsBookingBackend.Application.Services.Auth;
+using EventsBookingBackend.Application.Services.Book;
 using EventsBookingBackend.Application.Services.Event;
 using EventsBookingBackend.Application.Services.Review;
 using EventsBookingBackend.Application.Services.User;
@@ -24,6 +25,7 @@ public static class ApplicationDi
         services.AddTransient<IEventService, EventService>();
         services.AddTransient<IUserService, UserService>();
         services.AddTransient<IReviewService, ReviewService>();
+        services.AddTransient<IBookService, BookService>();
     }
 
     public static void UseMiddlewares(this IApplicationBuilder services)
