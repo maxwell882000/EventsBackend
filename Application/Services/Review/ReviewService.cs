@@ -23,7 +23,7 @@ public class ReviewService(
     {
         var currentUserId = authService.GetCurrentAuthUserId();
         var reviews = await reviewRepository.FindAll(new GetEventReviewsSpecification(request.EventId));
-        var users = await userRepository.FindAll(new GetUserProfilesSpecification(reviews.Select(e => e.Id).ToList()));
+        var users = await userRepository.FindAll(new GetUserProfilesSpecification(reviews.Select(e => e.UserId).ToList()));
         var userReviewDtos = GetUserReviewDto(users, reviews, (user) => user.Id != currentUserId);
         var ownUserReview = GetUserReviewDto(users, reviews, (user) => user.Id == currentUserId).FirstOrDefault();
         var reviewAggregate =
@@ -46,6 +46,7 @@ public class ReviewService(
         if (existingReview is not null)
             throw new AppValidationException("Оценка была уже сделана");
         var review = mapper.Map<Domain.Review.Entities.Review>(request);
+        review.UserId = userId;
         var result = await reviewRepository.Create(review);
         return new() { Id = result.Id };
     }
