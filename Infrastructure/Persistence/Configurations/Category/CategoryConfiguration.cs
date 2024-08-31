@@ -16,35 +16,36 @@ namespace EventsBookingBackend.Infrastructure.Persistence.Configurations.Categor
                     Icon = "AllIcon",
                     Name = "Все",
                     BgColor = "#9E77ED1F",
-                    IsActive = true
+                    IsDefault = true
                 },
                 new CategoryEntity
                 {
+                    Id = Guid.Parse("48c112b1-70f5-4270-8f75-98c74bc48d96"),
                     Icon = "FootballIcon",
                     Name = "Футбол",
                     BgColor = "#12B76A1F",
-                    IsActive = false
+                    IsDefault = false
                 },
                 new CategoryEntity
                 {
                     Icon = "BasketballIcon",
                     Name = "Баскетбол",
                     BgColor = "#F790091F",
-                    IsActive = false
+                    IsDefault = false
                 },
                 new CategoryEntity
                 {
                     Icon = "TennisIcon",
                     Name = "Теннис",
                     BgColor = "#F63D681F",
-                    IsActive = false
+                    IsDefault = false
                 },
                 new CategoryEntity
                 {
                     Icon = "PingPongIcon",
                     Name = "Пинг понг",
                     BgColor = "#0BA5EC1F",
-                    IsActive = false
+                    IsDefault = false
                 }
             );
         }

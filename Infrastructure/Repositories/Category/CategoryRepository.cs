@@ -5,5 +5,5 @@ using EventsBookingBackend.Infrastructure.Repositories.Common;
 namespace EventsBookingBackend.Infrastructure.Repositories.Category;
 
 public class CategoryRepository(CategoryDbContext context)
-    : CrudRepository<Domain.Category.Entities.Category, CategoryDbContext>(context),
+    : BaseRepository<Domain.Category.Entities.Category, CategoryDbContext>(context),
         ICategoriesRepository;

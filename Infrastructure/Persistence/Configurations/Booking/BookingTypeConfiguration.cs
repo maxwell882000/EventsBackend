@@ -9,6 +9,7 @@ public class BookingTypeConfiguration : BaseEntityConfiguration<BookingType>
     public override void Configure(EntityTypeBuilder<BookingType> builder)
     {
         base.Configure(builder);
-
+        builder.HasMany(e => e.BookingOptions)
+            .WithOne(e => e.BookingType);
     }
 }

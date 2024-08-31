@@ -6,4 +6,4 @@ using Microsoft.EntityFrameworkCore;
 namespace EventsBookingBackend.Infrastructure.Repositories.Event;
 
 public class EventRepository(EventDbContext context)
-    : CrudRepository<Domain.Event.Entities.Event, EventDbContext>(context), IEventRepository;
+    : BaseRepository<Domain.Event.Entities.Event, EventDbContext>(context), IEventRepository;

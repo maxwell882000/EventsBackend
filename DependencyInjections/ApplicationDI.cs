@@ -1,10 +1,16 @@
 using EventsBookingBackend.Api.ControllerOptions.Filters;
+using EventsBookingBackend.Api.ControllerOptions.Types;
 using EventsBookingBackend.Api.Conventions;
 using EventsBookingBackend.Api.Identity;
+using EventsBookingBackend.Api.Options;
 using EventsBookingBackend.Application.Common.Middlewares;
 using EventsBookingBackend.Application.Services.Auth;
 using EventsBookingBackend.Application.Services.Event;
+using EventsBookingBackend.Application.Services.Review;
+using EventsBookingBackend.Application.Services.User;
+using EventsBookingBackend.Shared.Options.File;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
 
@@ -16,11 +22,23 @@ public static class ApplicationDi
     {
         services.AddTransient<IAuthService, AuthService>();
         services.AddTransient<IEventService, EventService>();
+        services.AddTransient<IUserService, UserService>();
+        services.AddTransient<IReviewService, ReviewService>();
     }
 
     public static void UseMiddlewares(this IApplicationBuilder services)
     {
         // services.UseMiddleware<ExceptionMiddleware>();
+    }
+
+    public static void AddAppOptions(this IServiceCollection services, IConfiguration configuration)
+    {
+        #region File
+
+        services.Configure<HostOption>(
+            configuration.GetSection(nameof(HostOption)));
+
+        #endregion
     }
 
     public static void AddCommonExtensions(this IServiceCollection services)
@@ -57,7 +75,6 @@ public static class ApplicationDi
         });
         services.AddControllers(options =>
             {
-                options.Filters.Add(new ProducesResponseTypesFilter());
                 options.Conventions.Add(new RouteTokenTransformerConvention(new SnakeCaseRoutingConvention()));
             })
             .AddNewtonsoftJson(options =>
@@ -69,6 +86,8 @@ public static class ApplicationDi
                 options.SerializerSettings.Converters.Add(new JsonClaimConverter());
                 options.SerializerSettings.Converters.Add(new JsonClaimsPrincipalConverter());
                 options.SerializerSettings.Converters.Add(new JsonClaimsIdentityConverter());
+                options.SerializerSettings.Converters.Add(new FileDtoConverter(services.BuildServiceProvider()
+                    .GetRequiredService<IOptions<HostOption>>()));
             });
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
     }

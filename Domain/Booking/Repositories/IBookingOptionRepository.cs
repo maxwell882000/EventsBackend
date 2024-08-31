@@ -3,4 +3,4 @@ using EventsBookingBackend.Domain.Common.Repositories;
 
 namespace EventsBookingBackend.Domain.Booking.Repositories;
 
-public interface IBookingOptionRepository : ICrudRepository<BookingOption>;
+public interface IBookingOptionRepository : IBaseRepository<BookingOption>;

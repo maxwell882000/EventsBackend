@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EventsBookingBackend.Domain.Event.Specifications;
 
-public class GetAllEventsSpecification(Guid userId) : ISpecification<Entities.Event>
+public class GetAllEventsSpecification(Guid? userId) : ISpecification<Entities.Event>
 {
     public IQueryable<Entities.Event> Apply(IQueryable<Entities.Event> query)
     {

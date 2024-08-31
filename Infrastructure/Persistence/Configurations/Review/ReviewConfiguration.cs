@@ -10,5 +10,7 @@ public class ReviewConfiguration : BaseEntityConfiguration<ReviewEntity>
     {
         base.Configure(builder);
         builder.OwnsMany(e => e.MediaFiles);
+        builder.HasIndex(e => new { e.EventId, e.UserId }).IsUnique();
+        builder.HasIndex(e => e.EventId);
     }
 }

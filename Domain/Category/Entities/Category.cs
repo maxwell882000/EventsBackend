@@ -7,5 +7,5 @@ public class Category : BaseEntity
     public string Icon { get; set; }
     public string BgColor { get; set; }
     public string Name { get; set; }
-    public bool IsActive { get; set; }
+    public bool IsDefault { get; set; }
 }

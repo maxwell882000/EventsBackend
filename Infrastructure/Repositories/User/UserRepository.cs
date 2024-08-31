@@ -5,4 +5,4 @@ using EventsBookingBackend.Infrastructure.Repositories.Common;
 namespace EventsBookingBackend.Infrastructure.Repositories.User;
 
 public class UserRepository(UserDbContext context)
-    : CrudRepository<Domain.User.Entities.User, UserDbContext>(context), IUserRepository;
+    : BaseRepository<Domain.User.Entities.User, UserDbContext>(context), IUserRepository;

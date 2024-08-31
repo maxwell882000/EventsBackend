@@ -9,5 +9,6 @@ public interface IAuthService
 {
     public Task<ClaimsPrincipal> Register(AuthRegisterRequest request);
     public Task<ClaimsPrincipal> Login(AuthLoginRequest request);
-    public Task<AuthDto> GetCurrentAuthUser();
+    public Task<AuthDto?> GetCurrentAuthUser();
+    public Guid? GetCurrentAuthUserId();
 }

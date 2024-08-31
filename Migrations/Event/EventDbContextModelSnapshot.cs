@@ -60,6 +60,44 @@ namespace EventsBookingBackend.Migrations.Event
                         .HasDatabaseName("ix_events_is_deleted");
 
                     b.ToTable("events", "events");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("381b572f-1014-458d-9220-9aa92814c991"),
+                            CategoryId = new Guid("48c112b1-70f5-4270-8f75-98c74bc48d96"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Ташгрэс поле",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("c57330ee-81e3-40c4-b0e6-8fe788632e8e"),
+                            CategoryId = new Guid("48c112b1-70f5-4270-8f75-98c74bc48d96"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "225 школа поле",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("fe7e7d70-46ba-4f8e-893c-d2314c06b1cf"),
+                            CategoryId = new Guid("48c112b1-70f5-4270-8f75-98c74bc48d96"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "МВЭС поле",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("15f67450-ee32-4845-abe1-a7a13f43b006"),
+                            CategoryId = new Guid("48c112b1-70f5-4270-8f75-98c74bc48d96"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Эко парк поле",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("EventsBookingBackend.Domain.Event.Entities.EventAggregatedReview", b =>
@@ -171,6 +209,32 @@ namespace EventsBookingBackend.Migrations.Event
                             b1.WithOwner()
                                 .HasForeignKey("EventId")
                                 .HasConstraintName("fk_events_images_events_event_id");
+
+                            b1.HasData(
+                                new
+                                {
+                                    EventId = new Guid("381b572f-1014-458d-9220-9aa92814c991"),
+                                    Id = 1,
+                                    Path = "media/preview.png"
+                                },
+                                new
+                                {
+                                    EventId = new Guid("c57330ee-81e3-40c4-b0e6-8fe788632e8e"),
+                                    Id = 2,
+                                    Path = "media/preview.png"
+                                },
+                                new
+                                {
+                                    EventId = new Guid("fe7e7d70-46ba-4f8e-893c-d2314c06b1cf"),
+                                    Id = 3,
+                                    Path = "media/preview.png"
+                                },
+                                new
+                                {
+                                    EventId = new Guid("15f67450-ee32-4845-abe1-a7a13f43b006"),
+                                    Id = 4,
+                                    Path = "media/preview.png"
+                                });
                         });
 
                     b.OwnsOne("EventsBookingBackend.Domain.Common.ValueObjects.FileValueObject", "PreviewImage", b1 =>
@@ -192,6 +256,28 @@ namespace EventsBookingBackend.Migrations.Event
                             b1.WithOwner()
                                 .HasForeignKey("EventId")
                                 .HasConstraintName("fk_events_events_id");
+
+                            b1.HasData(
+                                new
+                                {
+                                    EventId = new Guid("381b572f-1014-458d-9220-9aa92814c991"),
+                                    Path = "media/preview.png"
+                                },
+                                new
+                                {
+                                    EventId = new Guid("c57330ee-81e3-40c4-b0e6-8fe788632e8e"),
+                                    Path = "media/preview.png"
+                                },
+                                new
+                                {
+                                    EventId = new Guid("fe7e7d70-46ba-4f8e-893c-d2314c06b1cf"),
+                                    Path = "media/preview.png"
+                                },
+                                new
+                                {
+                                    EventId = new Guid("15f67450-ee32-4845-abe1-a7a13f43b006"),
+                                    Path = "media/preview.png"
+                                });
                         });
 
                     b.OwnsOne("EventsBookingBackend.Domain.Event.ValueObjects.Building", "Building", b1 =>
@@ -221,12 +307,12 @@ namespace EventsBookingBackend.Migrations.Event
                                         .HasColumnType("uuid")
                                         .HasColumnName("id");
 
-                                    b2.Property<float>("Latitude")
-                                        .HasColumnType("real")
+                                    b2.Property<double>("Latitude")
+                                        .HasColumnType("double precision")
                                         .HasColumnName("building_lat_long_latitude");
 
-                                    b2.Property<float>("Longitude")
-                                        .HasColumnType("real")
+                                    b2.Property<double>("Longitude")
+                                        .HasColumnType("double precision")
                                         .HasColumnName("building_lat_long_longitude");
 
                                     b2.HasKey("BuildingEventId");
@@ -236,6 +322,32 @@ namespace EventsBookingBackend.Migrations.Event
                                     b2.WithOwner()
                                         .HasForeignKey("BuildingEventId")
                                         .HasConstraintName("fk_events_events_id");
+
+                                    b2.HasData(
+                                        new
+                                        {
+                                            BuildingEventId = new Guid("381b572f-1014-458d-9220-9aa92814c991"),
+                                            Latitude = 41.353098000000003,
+                                            Longitude = 69.336008000000007
+                                        },
+                                        new
+                                        {
+                                            BuildingEventId = new Guid("c57330ee-81e3-40c4-b0e6-8fe788632e8e"),
+                                            Latitude = 41.331662999999999,
+                                            Longitude = 69.328024999999997
+                                        },
+                                        new
+                                        {
+                                            BuildingEventId = new Guid("fe7e7d70-46ba-4f8e-893c-d2314c06b1cf"),
+                                            Latitude = 41.332619000000001,
+                                            Longitude = 69.329982000000001
+                                        },
+                                        new
+                                        {
+                                            BuildingEventId = new Guid("15f67450-ee32-4845-abe1-a7a13f43b006"),
+                                            Latitude = 41.309570000000001,
+                                            Longitude = 69.295299999999997
+                                        });
                                 });
 
                             b1.OwnsMany("EventsBookingBackend.Domain.Event.ValueObjects.WorkHour", "WorkHours", b2 =>
@@ -271,12 +383,288 @@ namespace EventsBookingBackend.Migrations.Event
                                     b2.WithOwner()
                                         .HasForeignKey("BuildingEventId")
                                         .HasConstraintName("fk_work_hour_events_building_event_id");
+
+                                    b2.HasData(
+                                        new
+                                        {
+                                            BuildingEventId = new Guid("381b572f-1014-458d-9220-9aa92814c991"),
+                                            Id = 1,
+                                            Day = 1,
+                                            FromHour = 10,
+                                            ToHour = 23
+                                        },
+                                        new
+                                        {
+                                            BuildingEventId = new Guid("381b572f-1014-458d-9220-9aa92814c991"),
+                                            Id = 3,
+                                            Day = 3,
+                                            FromHour = 10,
+                                            ToHour = 23
+                                        },
+                                        new
+                                        {
+                                            BuildingEventId = new Guid("381b572f-1014-458d-9220-9aa92814c991"),
+                                            Id = 2,
+                                            Day = 2,
+                                            FromHour = 10,
+                                            ToHour = 23
+                                        },
+                                        new
+                                        {
+                                            BuildingEventId = new Guid("381b572f-1014-458d-9220-9aa92814c991"),
+                                            Id = 5,
+                                            Day = 5,
+                                            FromHour = 10,
+                                            ToHour = 23
+                                        },
+                                        new
+                                        {
+                                            BuildingEventId = new Guid("381b572f-1014-458d-9220-9aa92814c991"),
+                                            Id = 6,
+                                            Day = 6,
+                                            FromHour = 10,
+                                            ToHour = 23
+                                        },
+                                        new
+                                        {
+                                            BuildingEventId = new Guid("381b572f-1014-458d-9220-9aa92814c991"),
+                                            Id = 4,
+                                            Day = 4,
+                                            FromHour = 10,
+                                            ToHour = 23
+                                        },
+                                        new
+                                        {
+                                            BuildingEventId = new Guid("381b572f-1014-458d-9220-9aa92814c991"),
+                                            Id = 7,
+                                            Day = 0,
+                                            FromHour = 10,
+                                            ToHour = 23
+                                        },
+                                        new
+                                        {
+                                            BuildingEventId = new Guid("c57330ee-81e3-40c4-b0e6-8fe788632e8e"),
+                                            Id = 8,
+                                            Day = 1,
+                                            FromHour = 10,
+                                            ToHour = 23
+                                        },
+                                        new
+                                        {
+                                            BuildingEventId = new Guid("c57330ee-81e3-40c4-b0e6-8fe788632e8e"),
+                                            Id = 9,
+                                            Day = 2,
+                                            FromHour = 10,
+                                            ToHour = 23
+                                        },
+                                        new
+                                        {
+                                            BuildingEventId = new Guid("c57330ee-81e3-40c4-b0e6-8fe788632e8e"),
+                                            Id = 10,
+                                            Day = 3,
+                                            FromHour = 10,
+                                            ToHour = 23
+                                        },
+                                        new
+                                        {
+                                            BuildingEventId = new Guid("c57330ee-81e3-40c4-b0e6-8fe788632e8e"),
+                                            Id = 11,
+                                            Day = 4,
+                                            FromHour = 10,
+                                            ToHour = 23
+                                        },
+                                        new
+                                        {
+                                            BuildingEventId = new Guid("c57330ee-81e3-40c4-b0e6-8fe788632e8e"),
+                                            Id = 12,
+                                            Day = 5,
+                                            FromHour = 10,
+                                            ToHour = 23
+                                        },
+                                        new
+                                        {
+                                            BuildingEventId = new Guid("c57330ee-81e3-40c4-b0e6-8fe788632e8e"),
+                                            Id = 13,
+                                            Day = 6,
+                                            FromHour = 10,
+                                            ToHour = 23
+                                        },
+                                        new
+                                        {
+                                            BuildingEventId = new Guid("c57330ee-81e3-40c4-b0e6-8fe788632e8e"),
+                                            Id = 14,
+                                            Day = 0,
+                                            FromHour = 10,
+                                            ToHour = 23
+                                        },
+                                        new
+                                        {
+                                            BuildingEventId = new Guid("fe7e7d70-46ba-4f8e-893c-d2314c06b1cf"),
+                                            Id = 15,
+                                            Day = 1,
+                                            FromHour = 10,
+                                            ToHour = 23
+                                        },
+                                        new
+                                        {
+                                            BuildingEventId = new Guid("fe7e7d70-46ba-4f8e-893c-d2314c06b1cf"),
+                                            Id = 16,
+                                            Day = 2,
+                                            FromHour = 10,
+                                            ToHour = 23
+                                        },
+                                        new
+                                        {
+                                            BuildingEventId = new Guid("fe7e7d70-46ba-4f8e-893c-d2314c06b1cf"),
+                                            Id = 17,
+                                            Day = 3,
+                                            FromHour = 10,
+                                            ToHour = 23
+                                        },
+                                        new
+                                        {
+                                            BuildingEventId = new Guid("fe7e7d70-46ba-4f8e-893c-d2314c06b1cf"),
+                                            Id = 19,
+                                            Day = 5,
+                                            FromHour = 10,
+                                            ToHour = 23
+                                        },
+                                        new
+                                        {
+                                            BuildingEventId = new Guid("fe7e7d70-46ba-4f8e-893c-d2314c06b1cf"),
+                                            Id = 20,
+                                            Day = 6,
+                                            FromHour = 10,
+                                            ToHour = 23
+                                        },
+                                        new
+                                        {
+                                            BuildingEventId = new Guid("fe7e7d70-46ba-4f8e-893c-d2314c06b1cf"),
+                                            Id = 18,
+                                            Day = 4,
+                                            FromHour = 10,
+                                            ToHour = 23
+                                        },
+                                        new
+                                        {
+                                            BuildingEventId = new Guid("fe7e7d70-46ba-4f8e-893c-d2314c06b1cf"),
+                                            Id = 21,
+                                            Day = 0,
+                                            FromHour = 10,
+                                            ToHour = 23
+                                        },
+                                        new
+                                        {
+                                            BuildingEventId = new Guid("15f67450-ee32-4845-abe1-a7a13f43b006"),
+                                            Id = 22,
+                                            Day = 1,
+                                            FromHour = 10,
+                                            ToHour = 23
+                                        },
+                                        new
+                                        {
+                                            BuildingEventId = new Guid("15f67450-ee32-4845-abe1-a7a13f43b006"),
+                                            Id = 23,
+                                            Day = 2,
+                                            FromHour = 10,
+                                            ToHour = 23
+                                        },
+                                        new
+                                        {
+                                            BuildingEventId = new Guid("15f67450-ee32-4845-abe1-a7a13f43b006"),
+                                            Id = 24,
+                                            Day = 3,
+                                            FromHour = 10,
+                                            ToHour = 23
+                                        },
+                                        new
+                                        {
+                                            BuildingEventId = new Guid("15f67450-ee32-4845-abe1-a7a13f43b006"),
+                                            Id = 25,
+                                            Day = 4,
+                                            FromHour = 10,
+                                            ToHour = 23
+                                        },
+                                        new
+                                        {
+                                            BuildingEventId = new Guid("15f67450-ee32-4845-abe1-a7a13f43b006"),
+                                            Id = 26,
+                                            Day = 5,
+                                            FromHour = 10,
+                                            ToHour = 23
+                                        },
+                                        new
+                                        {
+                                            BuildingEventId = new Guid("15f67450-ee32-4845-abe1-a7a13f43b006"),
+                                            Id = 27,
+                                            Day = 6,
+                                            FromHour = 10,
+                                            ToHour = 23
+                                        },
+                                        new
+                                        {
+                                            BuildingEventId = new Guid("15f67450-ee32-4845-abe1-a7a13f43b006"),
+                                            Id = 28,
+                                            Day = 0,
+                                            FromHour = 10,
+                                            ToHour = 23
+                                        });
                                 });
 
                             b1.Navigation("LatLong")
                                 .IsRequired();
 
                             b1.Navigation("WorkHours");
+
+                            b1.HasData(
+                                new
+                                {
+                                    EventId = new Guid("381b572f-1014-458d-9220-9aa92814c991"),
+                                    Address = "микрорайон ТашГРЭС, 37"
+                                },
+                                new
+                                {
+                                    EventId = new Guid("c57330ee-81e3-40c4-b0e6-8fe788632e8e"),
+                                    Address = "улица Каландар, 5"
+                                },
+                                new
+                                {
+                                    EventId = new Guid("fe7e7d70-46ba-4f8e-893c-d2314c06b1cf"),
+                                    Address = "ул. Мирзо Улугбека, 8А"
+                                },
+                                new
+                                {
+                                    EventId = new Guid("15f67450-ee32-4845-abe1-a7a13f43b006"),
+                                    Address = "Ташкентский центральный экопарк имени Захириддина Мухаммада Бабура"
+                                });
+                        });
+
+                    b.OwnsOne("EventsBookingBackend.Domain.Event.ValueObjects.EventState", "State", b1 =>
+                        {
+                            b1.Property<Guid>("EventId")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("uuid")
+                                .HasColumnName("id");
+
+                            b1.Property<bool>("IsActive")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("boolean")
+                                .HasDefaultValue(true)
+                                .HasColumnName("state_is_active");
+
+                            b1.Property<bool>("IsReservable")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("boolean")
+                                .HasDefaultValue(false)
+                                .HasColumnName("state_is_reservable");
+
+                            b1.HasKey("EventId");
+
+                            b1.ToTable("events", "events");
+
+                            b1.WithOwner()
+                                .HasForeignKey("EventId")
+                                .HasConstraintName("fk_events_events_id");
                         });
 
                     b.Navigation("Building")
@@ -285,6 +673,9 @@ namespace EventsBookingBackend.Migrations.Event
                     b.Navigation("Images");
 
                     b.Navigation("PreviewImage")
+                        .IsRequired();
+
+                    b.Navigation("State")
                         .IsRequired();
                 });
 

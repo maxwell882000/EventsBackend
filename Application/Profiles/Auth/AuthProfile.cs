@@ -12,7 +12,7 @@ public class AuthProfile : Profile
         CreateMap<AuthRegisterRequest, Domain.Auth.Entities.Auth>()
             .ForMember(e => e.UserName, src => src.MapFrom(e => e.Phone))
             .ForMember(e => e.PhoneNumber, src => src.MapFrom(e => e.Phone));
-        CreateMap<AuthRegisterRequest, User>();
+        CreateMap<AuthRegisterRequest, Domain.User.Entities.User>();
         CreateMap<Domain.Auth.Entities.Auth, AuthDto>();
     }
 }

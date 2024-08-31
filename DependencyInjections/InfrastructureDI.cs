@@ -3,11 +3,10 @@ using EventsBookingBackend.Domain.Auth.Entities;
 using EventsBookingBackend.Domain.Booking.Repositories;
 using EventsBookingBackend.Domain.Category.Repositories;
 using EventsBookingBackend.Domain.Event.Repositories;
-using EventsBookingBackend.Domain.Files.Repositories;
+using EventsBookingBackend.Domain.File.Repositories;
 using EventsBookingBackend.Domain.Files.Services;
 using EventsBookingBackend.Domain.Review.Repositories;
 using EventsBookingBackend.Domain.User.Repositories;
-using EventsBookingBackend.Infrastructure.Options.File;
 using EventsBookingBackend.Infrastructure.Persistence.DbContexts;
 using EventsBookingBackend.Infrastructure.Repositories.Event;
 using EventsBookingBackend.Infrastructure.Repositories.File;
@@ -17,6 +16,7 @@ using EventsBookingBackend.Infrastructure.Repositories.Event;
 using EventsBookingBackend.Infrastructure.Repositories.Review;
 using EventsBookingBackend.Infrastructure.Repositories.User;
 using EventsBookingBackend.Infrastructure.Services.File;
+using EventsBookingBackend.Shared.Options.File;
 using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -69,10 +69,13 @@ public static class InfrastructureDi
                         schema: "reviews"))
                 .UseSnakeCaseNamingConvention());
         services.AddDbContextPool<EventDbContext>(options =>
+        {
             options.UseNpgsql(connectionString, x =>
                     x.MigrationsHistoryTable(HistoryRepository.DefaultTableName,
                         schema: "events"))
-                .UseSnakeCaseNamingConvention());
+                .UseSnakeCaseNamingConvention();
+            options.EnableSensitiveDataLogging();
+        });
         services.AddDbContextPool<CategoryDbContext>(options =>
             options.UseNpgsql(connectionString, x =>
                     x.MigrationsHistoryTable(HistoryRepository.DefaultTableName,
@@ -121,6 +124,7 @@ public static class InfrastructureDi
         #region Review
 
         services.AddTransient<IReviewRepository, ReviewRepository>();
+        services.AddTransient<IReviewAggregateRepository, ReviewAggregateRepository>();
 
         #endregion
 
@@ -132,7 +136,8 @@ public static class InfrastructureDi
 
         #region File
 
-        services.AddTransient<IFileRepository, FileRepository>();
+        services.AddTransient<IFileDbRepository, FileDbDbRepository>();
+        services.AddTransient<IFileSystemRepository, FileSystemRepository>();
 
         #endregion
     }
@@ -146,7 +151,7 @@ public static class InfrastructureDi
         #endregion
     }
 
-    public static void AddOptions(this IServiceCollection services, IConfiguration configuration)
+    public static void AddInfraOptions(this IServiceCollection services, IConfiguration configuration)
     {
         #region File
 

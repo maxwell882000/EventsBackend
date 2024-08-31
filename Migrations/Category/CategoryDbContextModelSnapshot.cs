@@ -46,9 +46,9 @@ namespace EventsBookingBackend.Migrations.Category
                         .HasColumnType("text")
                         .HasColumnName("icon");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool>("IsDefault")
                         .HasColumnType("boolean")
-                        .HasColumnName("is_active");
+                        .HasColumnName("is_default");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean")
@@ -74,11 +74,11 @@ namespace EventsBookingBackend.Migrations.Category
                     b.HasData(
                         new
                         {
-                            Id = new Guid("5a778261-6711-407a-8228-19319cbb77fa"),
+                            Id = new Guid("9f70cd4c-82d0-4c61-8684-1b6e638cfd38"),
                             BgColor = "#9E77ED1F",
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Icon = "AllIcon",
-                            IsActive = true,
+                            IsDefault = true,
                             IsDeleted = false,
                             Name = "Все",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -89,40 +89,40 @@ namespace EventsBookingBackend.Migrations.Category
                             BgColor = "#12B76A1F",
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Icon = "FootballIcon",
-                            IsActive = false,
+                            IsDefault = false,
                             IsDeleted = false,
                             Name = "Футбол",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = new Guid("ef180f1c-66c0-43be-bf8b-cc98d24e0227"),
+                            Id = new Guid("b18bc270-82a2-4b44-afb0-a05fe2dd9d3c"),
                             BgColor = "#F790091F",
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Icon = "BasketballIcon",
-                            IsActive = false,
+                            IsDefault = false,
                             IsDeleted = false,
                             Name = "Баскетбол",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = new Guid("f5e9698a-9787-4836-a1ba-8e4c6316a9f3"),
+                            Id = new Guid("f18e521e-ae4e-49dc-8a96-f5f79e665c8c"),
                             BgColor = "#F63D681F",
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Icon = "TennisIcon",
-                            IsActive = false,
+                            IsDefault = false,
                             IsDeleted = false,
                             Name = "Теннис",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = new Guid("5b8a1187-b5bc-4504-8614-532cb27f974c"),
+                            Id = new Guid("1a38ebe5-31fc-4550-959f-cabb23197df1"),
                             BgColor = "#0BA5EC1F",
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Icon = "PingPongIcon",
-                            IsActive = false,
+                            IsDefault = false,
                             IsDeleted = false,
                             Name = "Пинг понг",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)

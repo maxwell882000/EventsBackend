@@ -6,4 +6,4 @@ using EventsBookingBackend.Infrastructure.Repositories.Common;
 namespace EventsBookingBackend.Infrastructure.Repositories.Booking;
 
 public class BookingTypeRepository(BookingDbContext context)
-    : CrudRepository<BookingType, BookingDbContext>(context), IBookingTypeRepository;
+    : BaseRepository<BookingType, BookingDbContext>(context), IBookingTypeRepository;

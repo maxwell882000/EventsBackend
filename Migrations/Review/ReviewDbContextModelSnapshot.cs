@@ -64,8 +64,15 @@ namespace EventsBookingBackend.Migrations.Review
                     b.HasKey("Id")
                         .HasName("pk_reviews");
 
+                    b.HasIndex("EventId")
+                        .HasDatabaseName("ix_reviews_event_id");
+
                     b.HasIndex("IsDeleted")
                         .HasDatabaseName("ix_reviews_is_deleted");
+
+                    b.HasIndex("EventId", "UserId")
+                        .IsUnique()
+                        .HasDatabaseName("ix_reviews_event_id_user_id");
 
                     b.ToTable("reviews", "reviews");
                 });

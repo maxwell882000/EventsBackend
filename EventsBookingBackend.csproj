@@ -26,10 +26,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Api\ControllerOptions\" />
-      <Folder Include="Application\Models\Event\Requests\" />
-      <Folder Include="Application\Services\Review\" />
-      <Folder Include="Application\Services\User\" />
+      <Folder Include="Application\Models\Booking\Requests\" />
+      <Folder Include="Application\Models\User\Requests\" />
       <Folder Include="Domain\Auth\Services\" />
       <Folder Include="Domain\Category\Services\" />
       <Folder Include="Domain\Event\Services\" />

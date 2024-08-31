@@ -1,5 +1,6 @@
 using EventsBookingBackend.Application.Common;
 using EventsBookingBackend.Application.Models.Common;
+using EventsBookingBackend.Application.Models.Event.Requests;
 using EventsBookingBackend.Application.Models.Event.Responses;
 using EventsBookingBackend.Application.Services.Event;
 using Microsoft.AspNetCore.Authorization;
@@ -7,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EventsBookingBackend.Api.Controllers;
 
-[Authorize]
 public class EventsController(IEventService eventService) : AppBaseController
 {
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -15,5 +15,14 @@ public class EventsController(IEventService eventService) : AppBaseController
     public async Task<ActionResult<IList<GetAllEventsResponse>>> GetAllEvents()
     {
         return Ok(await eventService.GetAllEvents());
+    }
+
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [HttpGet("get-event-detail")]
+    public async Task<ActionResult<IList<GetEventDetailResponse>>> GetEventDetail(
+        [FromQuery] GetEventDetailRequest request)
+    {
+        var detail = await eventService.GetEventDetail(request);
+        return Ok(detail);
     }
 }

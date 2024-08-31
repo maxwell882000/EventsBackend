@@ -4,6 +4,6 @@ namespace EventsBookingBackend.Domain.Event.ValueObjects;
 
 public class LatLong : BaseValueObject
 {
-    public float Latitude { get; set; }
-    public float Longitude { get; set; }
+    public double Latitude { get; set; }
+    public double Longitude { get; set; }
 }

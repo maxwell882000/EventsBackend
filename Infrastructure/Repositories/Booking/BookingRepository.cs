@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace EventsBookingBackend.Infrastructure.Repositories.Booking;
 
 public class BookingRepository(BookingDbContext context)
-    : CrudRepository<Domain.Booking.Entities.Booking, BookingDbContext>(context), IBookingRepository
+    : BaseRepository<Domain.Booking.Entities.Booking, BookingDbContext>(context), IBookingRepository
 {
     public Task<List<Domain.Booking.Entities.Booking>> GetUserBookings(Guid userId)
     {

@@ -1,4 +1,4 @@
-namespace EventsBookingBackend.Infrastructure.Options.File;
+namespace EventsBookingBackend.Shared.Options.File;
 
 public class FileOption
 {

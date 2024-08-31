@@ -11,7 +11,6 @@ public class ReviewDbContext(DbContextOptions<ReviewDbContext> options) : BaseDb
         base.OnModelCreating(modelBuilder);
         modelBuilder.HasDefaultSchema("reviews");
         modelBuilder.ApplyConfiguration(new ReviewConfiguration());
-
     }
 
     public DbSet<Review> Reviews { get; set; }

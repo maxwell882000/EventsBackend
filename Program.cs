@@ -23,7 +23,8 @@ builder.Services.AddRepositories();
 builder.Services.AddApplicationServices();
 builder.Services.AddCommonExtensions();
 builder.Services.AddServices();
-builder.Services.AddOptions(builder.Configuration);
+builder.Services.AddAppOptions(builder.Configuration);
+builder.Services.AddInfraOptions(builder.Configuration);
 // builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
@@ -38,7 +39,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c => c.DisplayRequestDuration());
 }
 
 using (var scope = app.Services.CreateScope())
@@ -64,6 +65,7 @@ var localizationOptions = new RequestLocalizationOptions
 };
 app.UseRequestLocalization(localizationOptions);
 
+app.UseStaticFiles();
 
 app.UseMiddlewares();
 

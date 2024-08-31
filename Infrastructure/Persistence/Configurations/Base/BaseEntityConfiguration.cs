@@ -21,7 +21,6 @@ namespace EventsBookingBackend.Infrastructure.Persistence.Configurations.Base
                 .IsRequired();
 
             builder.HasIndex(e => e.IsDeleted);
-
         }
     }
 }

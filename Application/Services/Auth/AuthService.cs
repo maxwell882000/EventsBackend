@@ -7,15 +7,17 @@ using EventsBookingBackend.Application.Models.Auth.Requests;
 using EventsBookingBackend.Application.Models.Auth.Responses;
 using EventsBookingBackend.Domain.User.Entities;
 using EventsBookingBackend.Domain.User.Repositories;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.Data;
+using Microsoft.Extensions.Options;
 
 namespace EventsBookingBackend.Application.Services.Auth;
 
 public class AuthService(
-    UserManager<Domain.Auth.Entities.Auth?> userManager,
+    Microsoft.AspNetCore.Identity.UserManager<Domain.Auth.Entities.Auth?> userManager,
     IUserRepository userRepository,
     SignInManager<Domain.Auth.Entities.Auth> signInManager,
     ILogger<AuthService> logger,
@@ -36,12 +38,25 @@ public class AuthService(
         throw new AppValidationException("Не правильный пароль или номер телефона");
     }
 
-    public async Task<AuthDto> GetCurrentAuthUser()
+    public async Task<AuthDto?> GetCurrentAuthUser()
     {
         var user = httpContextAccessor.HttpContext?.User;
-
-        return mapper.Map<AuthDto>(await userManager.GetUserAsync(user!));
+        if (user != null && user.Identity.IsAuthenticated)
+            return mapper.Map<AuthDto>(await userManager.GetUserAsync(user));
+        return null;
     }
+
+    public Guid? GetCurrentAuthUserId()
+    {
+        var user = httpContextAccessor.HttpContext?.User;
+        if (user != null && user.Identity?.IsAuthenticated == true)
+        {
+            return Guid.Parse(user.Identity.GetUserId());
+        }
+
+        return null;
+    }
+
 
     public async Task<ClaimsPrincipal> Register(AuthRegisterRequest request)
     {
@@ -55,7 +70,7 @@ public class AuthService(
             var result = await userManager.CreateAsync(auth, request.Password!);
             if (result.Succeeded)
             {
-                var user = mapper.Map<User>(request);
+                var user = mapper.Map<Domain.User.Entities.User>(request);
                 user.Id = auth.Id;
                 await userRepository.Create(user);
                 transactionScope.Complete();

@@ -6,8 +6,21 @@ public class Building : BaseValueObject
 {
     public LatLong LatLong { get; set; }
     public string Address { get; set; }
-    public List<WorkHour> WorkHours { get; set; }
 
-    public WorkHour? WorkTime => WorkHours.FirstOrDefault(e => e.Day == DateTime.Now.Day);
-    public bool IsOpen => WorkTime?.FromHour <= DateTime.Now.Hour && WorkTime?.ToHour >= DateTime.Now.Hour;
+    private List<WorkHour> _workHours;
+
+    public List<WorkHour> WorkHours
+    {
+        get => _workHours.OrderBy(e => e.Day).ToList();
+        set => _workHours = value;
+    }
+
+    public WorkHour? WorkDay =>
+        WorkHours.FirstOrDefault(e => e.Day >= DateTime.Now.DayOfWeek) ?? WorkHours.FirstOrDefault();
+
+    public bool IsOpen => DateTime.Now.DayOfWeek == WorkDay?.Day && WorkDay?.FromHour <= DateTime.Now.Hour &&
+                          WorkDay?.ToHour >= DateTime.Now.Hour;
+
+    public string NextTime => WorkDay == null ? "" :
+        IsOpen ? "Открыто до " + WorkDay.ToHour + ":00" : "Закрыто до " + WorkDay.FromHour + ":00";
 }
