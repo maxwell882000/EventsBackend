@@ -10,7 +10,6 @@ using AuthenticationSchemes = System.Net.AuthenticationSchemes;
 
 namespace EventsBookingBackend.Api.Controllers;
 
-// [Authorize]
 public class AuthController(IAuthService authService) : AppBaseController
 {
     [ProducesResponseType(StatusCodes.Status201Created)]
