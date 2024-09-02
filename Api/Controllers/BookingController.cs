@@ -7,14 +7,22 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EventsBookingBackend.Api.Controllers;
 
+[Authorize]
 public class BookingController(IBookService bookService) : AppBaseController
 {
     [ProducesResponseType(StatusCodes.Status200OK)]
     [HttpPost]
-    [Authorize]
     public async Task<ActionResult<CreateBookingResponse>> CreateBooking(
         [FromQuery] CreateBookingRequest request)
     {
         return Ok(await bookService.CreateBooking(request));
+    }
+
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [HttpGet("get-same-booking-count")]
+    public async Task<ActionResult<GetSameBookingsCountResponse>> GetSimilarBookingCount(
+        [FromQuery] GetSameBookingsCountRequest request)
+    {
+        return Ok(await bookService.GetSameBookingsCount(request));
     }
 }

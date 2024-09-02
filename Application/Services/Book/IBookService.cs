@@ -6,4 +6,7 @@ namespace EventsBookingBackend.Application.Services.Book;
 public interface IBookService
 {
     public Task<CreateBookingResponse> CreateBooking(CreateBookingRequest request);
+
+    public Task<GetSameBookingsCountResponse> GetSameBookingsCount(GetSameBookingsCountRequest request);
+
 }

@@ -7,14 +7,12 @@ namespace EventsBookingBackend.Domain.Booking.Services;
 public class BookDomainService(IBookingRepository bookingRepository, IBookingLimitRepository bookingLimitRepository)
     : IBookingDomainService
 {
-    public async Task<Entities.Booking> MakeBooking(Entities.Booking booking)
+    public async Task<Entities.Booking> CreateBooking(Entities.Booking booking)
     {
         var currentLimit = await bookingLimitRepository.FindFirst(new GetEventBookingLimit(booking.EventId))
                            ?? await bookingLimitRepository.FindFirst(new GetDefaultBookingLimit(booking.BookingTypeId));
 
-        var allBookings = await bookingRepository
-            .FindAll(new GetSimilarBookings(booking.EventId, booking.BookingTypeId));
-        var bookingCount = allBookings.Count(e => e.IsSameBooking(booking.BookingOptions));
+        var bookingCount = await SameBookingsCount(booking);
 
         if (currentLimit != null && bookingCount >= currentLimit.MaxBookings)
         {
@@ -24,5 +22,12 @@ public class BookDomainService(IBookingRepository bookingRepository, IBookingLim
         await bookingRepository.Create(booking);
 
         return booking;
+    }
+
+    public async Task<int> SameBookingsCount(Entities.Booking booking)
+    {
+        var allBookings = await bookingRepository
+            .FindAll(new GetSimilarBookings(booking.EventId, booking.BookingTypeId));
+        return allBookings.Count(e => e.IsSameBooking(booking.BookingOptions));
     }
 }

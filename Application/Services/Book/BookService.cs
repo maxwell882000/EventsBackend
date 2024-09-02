@@ -25,10 +25,20 @@ public class BookService(
         var eventEntity = await eventRepository.FindFirst(new GetEventByIdSpecification((Guid)request.EventId!));
         if (eventEntity == null)
             throw new AppValidationException("Не найдено событие !");
-        await bookingDomainService.MakeBooking(booking);
+        await bookingDomainService.CreateBooking(booking);
         return new CreateBookingResponse()
         {
             BookingId = booking.Id,
+        };
+    }
+
+    public async Task<GetSameBookingsCountResponse> GetSameBookingsCount(GetSameBookingsCountRequest request)
+    {
+        var booking = mapper.Map<Booking>(request);
+        var bookingCount = await bookingDomainService.SameBookingsCount(booking);
+        return new GetSameBookingsCountResponse()
+        {
+            Count = bookingCount,
         };
     }
 }
