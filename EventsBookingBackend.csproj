@@ -39,4 +39,10 @@
       <Folder Include="Infrastructure\Services\User\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="EventsBookingBackendTest\obj\EventsBookingBackendTest.csproj.nuget.dgspec.json" />
+      <_ContentIncludedByDefault Remove="EventsBookingBackendTest\obj\project.assets.json" />
+      <_ContentIncludedByDefault Remove="EventsBookingBackendTest\obj\project.packagespec.json" />
+    </ItemGroup>
+
 </Project>

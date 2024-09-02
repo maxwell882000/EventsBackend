@@ -9,6 +9,8 @@ using EventsBookingBackend.Application.Services.Book;
 using EventsBookingBackend.Application.Services.Event;
 using EventsBookingBackend.Application.Services.Review;
 using EventsBookingBackend.Application.Services.User;
+using EventsBookingBackend.Domain.Booking.Repositories;
+using EventsBookingBackend.Infrastructure.Repositories.Booking;
 using EventsBookingBackend.Shared.Options.File;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.Extensions.Options;
@@ -26,6 +28,7 @@ public static class ApplicationDi
         services.AddTransient<IUserService, UserService>();
         services.AddTransient<IReviewService, ReviewService>();
         services.AddTransient<IBookService, BookService>();
+        services.AddTransient<IBookingTypeService, BookingTypeService>();
     }
 
     public static void UseMiddlewares(this IApplicationBuilder services)

@@ -1,5 +1,6 @@
 using AutoMapper;
 using EventsBookingBackend.Application.Models.Booking.Dto;
+using EventsBookingBackend.Application.Models.Booking.Requests;
 using EventsBookingBackend.Application.Models.Booking.Responses;
 using EventsBookingBackend.Domain.Booking.Entities;
 using EventsBookingBackend.Domain.Booking.ValueObjects;
@@ -11,7 +12,11 @@ public class BookingProfile : Profile
     public BookingProfile()
     {
         CreateMap<BookingType, GetBookingTypeByCategoryResponse>();
-        CreateMap<BookingOption, BookingOptionDto>();
-        CreateMap<BookingOptionValue, BookingOptionValueDto>();
+        CreateMap<CreateBookingRequest, Domain.Booking.Entities.Booking>();
+        CreateMap<CreateBookingTypeRequest, BookingType>();
+        CreateMap<BookingType, CreateBookingTypeResponse>();
+
+        CreateMap<BookingOption, BookingOptionDto>().ReverseMap();
+        CreateMap<BookingOptionValue, BookingOptionValueDto>().ReverseMap();
     }
 }

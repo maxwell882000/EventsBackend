@@ -41,9 +41,11 @@ namespace EventsBookingBackend.Infrastructure.Repositories.Common
             return await DbSet.AsNoTracking().ToListAsync();
         }
 
-        public async Task<TEntity?> FindFirst(ISpecification<TEntity> specification)
+        public async Task<TEntity?> FindFirst(ISpecification<TEntity>? specification = null)
         {
-            return await specification.Apply(context.Set<TEntity>()).AsNoTracking().FirstOrDefaultAsync();
+            if (specification != null)
+                return await specification.Apply(context.Set<TEntity>()).AsNoTracking().FirstOrDefaultAsync();
+            return await DbSet.AsNoTracking().FirstOrDefaultAsync();
         }
     }
 }

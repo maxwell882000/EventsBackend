@@ -1,7 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace EventsBookingBackend.Application.Models.Booking.Dto;
 
 public class BookingOptionValueDto
 {
-    public string Value { get; set; }
+    [Required]
+    public string? Value { get; set; }
 
 }

@@ -9,5 +9,5 @@ public interface IBaseRepository<T> where T : BaseEntity
     public Task<T> Update(T entity);
     public Task<bool> Delete(T entity);
     public Task<List<T>> FindAll(ISpecification<T>? specification = null);
-    public Task<T?> FindFirst(ISpecification<T> specification);
+    public Task<T?> FindFirst(ISpecification<T>? specification = null);
 }

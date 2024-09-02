@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EventsBookingBackend.Domain.Booking.Specifications;
 
-public class GetBookingTypeByCategorySpecification(Guid categoryId) : ISpecification<BookingType>
+public class GetBookingTypeByCategory(Guid categoryId) : ISpecification<BookingType>
 {
     public IQueryable<BookingType> Apply(IQueryable<BookingType> query)
     {

@@ -1,17 +1,34 @@
 using AutoMapper;
+using EventsBookingBackend.Application.Common.Exceptions;
 using EventsBookingBackend.Application.Models.Booking.Requests;
 using EventsBookingBackend.Application.Models.Booking.Responses;
+using EventsBookingBackend.Application.Services.Auth;
+using EventsBookingBackend.Domain.Booking.Entities;
 using EventsBookingBackend.Domain.Booking.Repositories;
+using EventsBookingBackend.Domain.Booking.Services;
 using EventsBookingBackend.Domain.Booking.Specifications;
+using EventsBookingBackend.Domain.Event.Repositories;
+using EventsBookingBackend.Domain.Event.Specifications;
 
 namespace EventsBookingBackend.Application.Services.Book;
 
-public class BookService(IBookingTypeRepository bookingTypeRepository, IMapper mapper) : IBookService
+public class BookService(
+    IBookingDomainService bookingDomainService,
+    IEventRepository eventRepository,
+    IAuthService authService,
+    IMapper mapper) : IBookService
 {
-    public async Task<GetBookingTypeByCategoryResponse> GetBookingType(GetBookingTypeByCategoryRequest request)
+    public async Task<CreateBookingResponse> CreateBooking(CreateBookingRequest request)
     {
-        var bookingType = await
-            bookingTypeRepository.FindFirst(new GetBookingTypeByCategorySpecification(request.CategoryId));
-        return mapper.Map<GetBookingTypeByCategoryResponse>(bookingType);
+        var booking = mapper.Map<Booking>(request);
+        booking.UserId = (Guid)authService.GetCurrentAuthUserId()!;
+        var eventEntity = await eventRepository.FindFirst(new GetEventByIdSpecification((Guid)request.EventId!));
+        if (eventEntity == null)
+            throw new AppValidationException("Не найдено событие !");
+        await bookingDomainService.MakeBooking(booking);
+        return new CreateBookingResponse()
+        {
+            BookingId = booking.Id,
+        };
     }
 }

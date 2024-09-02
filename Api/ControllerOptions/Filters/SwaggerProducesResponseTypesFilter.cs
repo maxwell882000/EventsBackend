@@ -10,7 +10,7 @@ public class SwaggerProducesResponseTypesFilter : IOperationFilter
     {
         var errorResponseType = new OpenApiResponse
         {
-            Description = "Internal Server Error",
+            Description = "Internal Server Exceptions",
             Content = new Dictionary<string, OpenApiMediaType>
             {
                 ["application/json"] = new OpenApiMediaType

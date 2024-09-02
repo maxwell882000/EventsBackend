@@ -74,7 +74,6 @@ public static class InfrastructureDi
                     x.MigrationsHistoryTable(HistoryRepository.DefaultTableName,
                         schema: "events"))
                 .UseSnakeCaseNamingConvention();
-            options.EnableSensitiveDataLogging();
         });
         services.AddDbContextPool<CategoryDbContext>(options =>
             options.UseNpgsql(connectionString, x =>
@@ -105,6 +104,7 @@ public static class InfrastructureDi
         services.AddTransient<IBookingTypeRepository, BookingTypeRepository>();
         services.AddTransient<IBookingOptionRepository, BookingOptionRepository>();
         services.AddTransient<IBookingRepository, BookingRepository>();
+        services.AddTransient<IBookingLimitRepository, BookingLimitRepository>();
 
         #endregion
 

@@ -21,6 +21,7 @@ builder.Services.AddAuth();
 builder.Services.AddDatabases(builder.Configuration);
 builder.Services.AddRepositories();
 builder.Services.AddApplicationServices();
+builder.Services.AddDomainServices();
 builder.Services.AddCommonExtensions();
 builder.Services.AddServices();
 builder.Services.AddAppOptions(builder.Configuration);

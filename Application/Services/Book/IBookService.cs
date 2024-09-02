@@ -5,5 +5,5 @@ namespace EventsBookingBackend.Application.Services.Book;
 
 public interface IBookService
 {
-    public Task<GetBookingTypeByCategoryResponse> GetBookingType(GetBookingTypeByCategoryRequest request);
+    public Task<CreateBookingResponse> CreateBooking(CreateBookingRequest request);
 }

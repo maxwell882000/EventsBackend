@@ -19,24 +19,6 @@ namespace EventsBookingBackend.Migrations.Booking
                 .Annotation("Npgsql:PostgresExtension:uuid-ossp", ",,");
 
             migrationBuilder.CreateTable(
-                name: "booking_options",
-                schema: "bookings",
-                columns: table => new
-                {
-                    id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "uuid_generate_v4()"),
-                    label = table.Column<string>(type: "text", nullable: false),
-                    type = table.Column<string>(type: "text", nullable: false),
-                    category_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    is_deleted = table.Column<bool>(type: "boolean", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_booking_options", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "booking_types",
                 schema: "bookings",
                 columns: table => new
@@ -44,6 +26,7 @@ namespace EventsBookingBackend.Migrations.Booking
                     id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "uuid_generate_v4()"),
                     label = table.Column<string>(type: "text", nullable: false),
                     category_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    cost = table.Column<decimal>(type: "numeric", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     is_deleted = table.Column<bool>(type: "boolean", nullable: false)
@@ -51,6 +34,81 @@ namespace EventsBookingBackend.Migrations.Booking
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_booking_types", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "booking_limits",
+                schema: "bookings",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "uuid_generate_v4()"),
+                    event_id = table.Column<Guid>(type: "uuid", nullable: true),
+                    booking_type_id = table.Column<Guid>(type: "uuid", nullable: true),
+                    max_bookings = table.Column<int>(type: "integer", nullable: false),
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    is_deleted = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_booking_limits", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_booking_limits_booking_types_booking_type_id",
+                        column: x => x.booking_type_id,
+                        principalSchema: "bookings",
+                        principalTable: "booking_types",
+                        principalColumn: "id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "booking_options",
+                schema: "bookings",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "uuid_generate_v4()"),
+                    label = table.Column<string>(type: "text", nullable: false),
+                    type = table.Column<string>(type: "text", nullable: false),
+                    booking_type_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    is_deleted = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_booking_options", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_booking_options_booking_types_booking_type_id",
+                        column: x => x.booking_type_id,
+                        principalSchema: "bookings",
+                        principalTable: "booking_types",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "bookings",
+                schema: "bookings",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "uuid_generate_v4()"),
+                    status = table.Column<string>(type: "text", nullable: false),
+                    event_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    user_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    booking_type_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    is_deleted = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_bookings", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_bookings_booking_types_booking_type_id",
+                        column: x => x.booking_type_id,
+                        principalSchema: "bookings",
+                        principalTable: "booking_types",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -76,40 +134,12 @@ namespace EventsBookingBackend.Migrations.Booking
                 });
 
             migrationBuilder.CreateTable(
-                name: "bookings",
-                schema: "bookings",
-                columns: table => new
-                {
-                    id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "uuid_generate_v4()"),
-                    status = table.Column<string>(type: "text", nullable: false),
-                    cost = table.Column<decimal>(type: "numeric", nullable: false),
-                    event_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    user_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    booking_type_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    is_deleted = table.Column<bool>(type: "boolean", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_bookings", x => x.id);
-                    table.ForeignKey(
-                        name: "fk_bookings_booking_types_booking_type_id",
-                        column: x => x.booking_type_id,
-                        principalSchema: "bookings",
-                        principalTable: "booking_types",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "booking_user_options",
                 schema: "bookings",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "uuid_generate_v4()"),
-                    booking_option_value_value = table.Column<string>(type: "text", nullable: true),
-                    value = table.Column<string>(type: "text", nullable: true),
+                    booking_option_value_value = table.Column<string>(type: "text", nullable: false),
                     booking_id = table.Column<Guid>(type: "uuid", nullable: false),
                     option_id = table.Column<Guid>(type: "uuid", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -134,6 +164,24 @@ namespace EventsBookingBackend.Migrations.Booking
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "ix_booking_limits_booking_type_id",
+                schema: "bookings",
+                table: "booking_limits",
+                column: "booking_type_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_booking_limits_is_deleted",
+                schema: "bookings",
+                table: "booking_limits",
+                column: "is_deleted");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_booking_options_booking_type_id",
+                schema: "bookings",
+                table: "booking_options",
+                column: "booking_type_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_booking_options_is_deleted",
@@ -181,6 +229,10 @@ namespace EventsBookingBackend.Migrations.Booking
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "booking_limits",
+                schema: "bookings");
+
             migrationBuilder.DropTable(
                 name: "booking_options_booking_option_values",
                 schema: "bookings");

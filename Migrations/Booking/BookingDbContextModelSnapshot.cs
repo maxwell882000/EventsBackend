@@ -36,10 +36,6 @@ namespace EventsBookingBackend.Migrations.Booking
                         .HasColumnType("uuid")
                         .HasColumnName("booking_type_id");
 
-                    b.Property<decimal>("Cost")
-                        .HasColumnType("numeric")
-                        .HasColumnName("cost");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
@@ -77,6 +73,50 @@ namespace EventsBookingBackend.Migrations.Booking
                     b.ToTable("bookings", "bookings");
                 });
 
+            modelBuilder.Entity("EventsBookingBackend.Domain.Booking.Entities.BookingLimit", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id")
+                        .HasDefaultValueSql("uuid_generate_v4()");
+
+                    b.Property<Guid?>("BookingTypeId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("booking_type_id");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<Guid?>("EventId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("event_id");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
+
+                    b.Property<int>("MaxBookings")
+                        .HasColumnType("integer")
+                        .HasColumnName("max_bookings");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("Id")
+                        .HasName("pk_booking_limits");
+
+                    b.HasIndex("BookingTypeId")
+                        .HasDatabaseName("ix_booking_limits_booking_type_id");
+
+                    b.HasIndex("IsDeleted")
+                        .HasDatabaseName("ix_booking_limits_is_deleted");
+
+                    b.ToTable("booking_limits", "bookings");
+                });
+
             modelBuilder.Entity("EventsBookingBackend.Domain.Booking.Entities.BookingOption", b =>
                 {
                     b.Property<Guid>("Id")
@@ -85,9 +125,9 @@ namespace EventsBookingBackend.Migrations.Booking
                         .HasColumnName("id")
                         .HasDefaultValueSql("uuid_generate_v4()");
 
-                    b.Property<Guid>("CategoryId")
+                    b.Property<Guid>("BookingTypeId")
                         .HasColumnType("uuid")
-                        .HasColumnName("category_id");
+                        .HasColumnName("booking_type_id");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
@@ -114,6 +154,9 @@ namespace EventsBookingBackend.Migrations.Booking
                     b.HasKey("Id")
                         .HasName("pk_booking_options");
 
+                    b.HasIndex("BookingTypeId")
+                        .HasDatabaseName("ix_booking_options_booking_type_id");
+
                     b.HasIndex("IsDeleted")
                         .HasDatabaseName("ix_booking_options_is_deleted");
 
@@ -131,6 +174,10 @@ namespace EventsBookingBackend.Migrations.Booking
                     b.Property<Guid>("CategoryId")
                         .HasColumnType("uuid")
                         .HasColumnName("category_id");
+
+                    b.Property<decimal>("Cost")
+                        .HasColumnType("numeric")
+                        .HasColumnName("cost");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
@@ -186,10 +233,6 @@ namespace EventsBookingBackend.Migrations.Booking
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
-                    b.Property<string>("Value")
-                        .HasColumnType("text")
-                        .HasColumnName("value");
-
                     b.HasKey("Id")
                         .HasName("pk_booking_user_options");
 
@@ -217,8 +260,23 @@ namespace EventsBookingBackend.Migrations.Booking
                     b.Navigation("BookingType");
                 });
 
+            modelBuilder.Entity("EventsBookingBackend.Domain.Booking.Entities.BookingLimit", b =>
+                {
+                    b.HasOne("EventsBookingBackend.Domain.Booking.Entities.BookingType", null)
+                        .WithMany()
+                        .HasForeignKey("BookingTypeId")
+                        .HasConstraintName("fk_booking_limits_booking_types_booking_type_id");
+                });
+
             modelBuilder.Entity("EventsBookingBackend.Domain.Booking.Entities.BookingOption", b =>
                 {
+                    b.HasOne("EventsBookingBackend.Domain.Booking.Entities.BookingType", "BookingType")
+                        .WithMany("BookingOptions")
+                        .HasForeignKey("BookingTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_booking_options_booking_types_booking_type_id");
+
                     b.OwnsMany("EventsBookingBackend.Domain.Booking.ValueObjects.BookingOptionValue", "BookingOptionValues", b1 =>
                         {
                             b1.Property<Guid>("BookingOptionId")
@@ -248,6 +306,8 @@ namespace EventsBookingBackend.Migrations.Booking
                         });
 
                     b.Navigation("BookingOptionValues");
+
+                    b.Navigation("BookingType");
                 });
 
             modelBuilder.Entity("EventsBookingBackend.Domain.Booking.Entities.BookingUserOption", b =>
@@ -287,12 +347,18 @@ namespace EventsBookingBackend.Migrations.Booking
                                 .HasConstraintName("fk_booking_user_options_booking_user_options_id");
                         });
 
-                    b.Navigation("BookingOptionValue");
+                    b.Navigation("BookingOptionValue")
+                        .IsRequired();
 
                     b.Navigation("Option");
                 });
 
             modelBuilder.Entity("EventsBookingBackend.Domain.Booking.Entities.Booking", b =>
+                {
+                    b.Navigation("BookingOptions");
+                });
+
+            modelBuilder.Entity("EventsBookingBackend.Domain.Booking.Entities.BookingType", b =>
                 {
                     b.Navigation("BookingOptions");
                 });

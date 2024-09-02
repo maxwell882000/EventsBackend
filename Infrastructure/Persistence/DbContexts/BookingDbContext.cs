@@ -14,10 +14,12 @@ public class BookingDbContext(DbContextOptions<BookingDbContext> options) : Base
         modelBuilder.ApplyConfiguration(new BookingTypeConfiguration());
         modelBuilder.ApplyConfiguration(new BookingConfigurations());
         modelBuilder.ApplyConfiguration(new BookingUserOptionConfiguration());
+        modelBuilder.ApplyConfiguration(new BookingLimitConfiguration());
     }
 
     public DbSet<BookingOption> BookingOptions { get; init; }
     public DbSet<BookingType> BookingTypes { get; init; }
     public DbSet<Booking> Bookings { get; init; }
+    public DbSet<BookingLimit> BookingLimits { get; init; }
     public DbSet<BookingUserOption> BookingUserOptions { get; init; }
 }
