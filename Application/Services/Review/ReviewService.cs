@@ -23,7 +23,8 @@ public class ReviewService(
     {
         var currentUserId = authService.GetCurrentAuthUserId();
         var reviews = await reviewRepository.FindAll(new GetEventReviewsSpecification(request.EventId));
-        var users = await userRepository.FindAll(new GetUserProfilesSpecification(reviews.Select(e => e.UserId).ToList()));
+        var users = await userRepository.FindAll(
+            new GetUserProfilesSpecification(reviews.Select(e => e.UserId).ToList()));
         var userReviewDtos = GetUserReviewDto(users, reviews, (user) => user.Id != currentUserId);
         var ownUserReview = GetUserReviewDto(users, reviews, (user) => user.Id == currentUserId).FirstOrDefault();
         var reviewAggregate =
@@ -32,6 +33,7 @@ public class ReviewService(
         return new GetReviewsByEventResponse()
         {
             Mark = reviewAggregate.Mark,
+            EventId = request.EventId,
             ReviewCount = reviewAggregate.ReviewCount,
             UserReviews = userReviewDtos.ToList(),
             OwnReview = ownUserReview

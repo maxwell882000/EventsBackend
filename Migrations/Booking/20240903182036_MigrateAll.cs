@@ -27,6 +27,9 @@ namespace EventsBookingBackend.Migrations.Booking
                     label = table.Column<string>(type: "text", nullable: false),
                     category_id = table.Column<Guid>(type: "uuid", nullable: false),
                     cost = table.Column<decimal>(type: "numeric", nullable: false),
+                    icon_path = table.Column<string>(type: "text", nullable: false),
+                    order = table.Column<int>(type: "integer", nullable: false),
+                    is_show_limit = table.Column<bool>(type: "boolean", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     is_deleted = table.Column<bool>(type: "boolean", nullable: false)
@@ -67,6 +70,7 @@ namespace EventsBookingBackend.Migrations.Booking
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "uuid_generate_v4()"),
                     label = table.Column<string>(type: "text", nullable: false),
+                    order = table.Column<int>(type: "integer", nullable: false),
                     type = table.Column<string>(type: "text", nullable: false),
                     booking_type_id = table.Column<Guid>(type: "uuid", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -178,16 +182,24 @@ namespace EventsBookingBackend.Migrations.Booking
                 column: "is_deleted");
 
             migrationBuilder.CreateIndex(
-                name: "ix_booking_options_booking_type_id",
+                name: "ix_booking_options_booking_type_id_order",
                 schema: "bookings",
                 table: "booking_options",
-                column: "booking_type_id");
+                columns: new[] { "booking_type_id", "order" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "ix_booking_options_is_deleted",
                 schema: "bookings",
                 table: "booking_options",
                 column: "is_deleted");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_booking_types_category_id_order",
+                schema: "bookings",
+                table: "booking_types",
+                columns: new[] { "category_id", "order" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "ix_booking_types_is_deleted",

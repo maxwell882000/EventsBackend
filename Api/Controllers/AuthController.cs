@@ -33,7 +33,7 @@ public class AuthController(IAuthService authService) : AppBaseController
     }
 
     [Authorize]
-    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [HttpGet("get-user")]
     public async Task<IActionResult> GetUser()
     {

@@ -36,9 +36,11 @@ public class BookService(
     {
         var booking = mapper.Map<Booking>(request);
         var bookingCount = await bookingDomainService.SameBookingsCount(booking);
+        var bookingLimit = await bookingDomainService.GetBookingLimit(booking);
         return new GetSameBookingsCountResponse()
         {
             Count = bookingCount,
+            TotalCount = bookingLimit?.MaxBookings ?? 0
         };
     }
 }

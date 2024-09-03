@@ -8,6 +8,8 @@ public class GetBookingTypeByCategory(Guid categoryId) : ISpecification<BookingT
 {
     public IQueryable<BookingType> Apply(IQueryable<BookingType> query)
     {
-        return query.Include(e => e.BookingOptions).Where(e => e.CategoryId == categoryId);
+        return query
+            .Include(e => e.BookingOptions.OrderBy(op => op.Order))
+            .Where(e => e.CategoryId == categoryId).OrderBy(e => e.Order);
     }
 }

@@ -1,3 +1,4 @@
+using EventsBookingBackend.Domain.Booking.Entities;
 using EventsBookingBackend.Domain.Booking.Repositories;
 using EventsBookingBackend.Domain.Booking.Specifications;
 using EventsBookingBackend.Domain.Common.Exceptions;
@@ -9,8 +10,7 @@ public class BookDomainService(IBookingRepository bookingRepository, IBookingLim
 {
     public async Task<Entities.Booking> CreateBooking(Entities.Booking booking)
     {
-        var currentLimit = await bookingLimitRepository.FindFirst(new GetEventBookingLimit(booking.EventId))
-                           ?? await bookingLimitRepository.FindFirst(new GetDefaultBookingLimit(booking.BookingTypeId));
+        var currentLimit = await GetBookingLimit(booking);
 
         var bookingCount = await SameBookingsCount(booking);
 
@@ -28,6 +28,13 @@ public class BookDomainService(IBookingRepository bookingRepository, IBookingLim
     {
         var allBookings = await bookingRepository
             .FindAll(new GetSimilarBookings(booking.EventId, booking.BookingTypeId));
+
         return allBookings.Count(e => e.IsSameBooking(booking.BookingOptions));
+    }
+
+    public async Task<BookingLimit?> GetBookingLimit(Entities.Booking booking)
+    {
+        return await bookingLimitRepository.FindFirst(new GetEventBookingLimit(booking.EventId))
+               ?? await bookingLimitRepository.FindFirst(new GetDefaultBookingLimit(booking.BookingTypeId));
     }
 }

@@ -6,6 +6,7 @@ namespace EventsBookingBackend.Domain.Booking.Entities;
 public class BookingOption : BaseEntity
 {
     public string Label { get; set; }
+    public int Order { get; set; }
     public BookingOptionType Type { get; set; }
     public List<BookingOptionValue>? BookingOptionValues { get; set; }
     public BookingType BookingType { get; set; }

@@ -142,6 +142,10 @@ namespace EventsBookingBackend.Migrations.Booking
                         .HasColumnType("text")
                         .HasColumnName("label");
 
+                    b.Property<int>("Order")
+                        .HasColumnType("integer")
+                        .HasColumnName("order");
+
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("text")
@@ -154,11 +158,12 @@ namespace EventsBookingBackend.Migrations.Booking
                     b.HasKey("Id")
                         .HasName("pk_booking_options");
 
-                    b.HasIndex("BookingTypeId")
-                        .HasDatabaseName("ix_booking_options_booking_type_id");
-
                     b.HasIndex("IsDeleted")
                         .HasDatabaseName("ix_booking_options_is_deleted");
+
+                    b.HasIndex("BookingTypeId", "Order")
+                        .IsUnique()
+                        .HasDatabaseName("ix_booking_options_booking_type_id_order");
 
                     b.ToTable("booking_options", "bookings");
                 });
@@ -187,10 +192,18 @@ namespace EventsBookingBackend.Migrations.Booking
                         .HasColumnType("boolean")
                         .HasColumnName("is_deleted");
 
+                    b.Property<bool>("IsShowLimit")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_show_limit");
+
                     b.Property<string>("Label")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("label");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("integer")
+                        .HasColumnName("order");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
@@ -201,6 +214,10 @@ namespace EventsBookingBackend.Migrations.Booking
 
                     b.HasIndex("IsDeleted")
                         .HasDatabaseName("ix_booking_types_is_deleted");
+
+                    b.HasIndex("CategoryId", "Order")
+                        .IsUnique()
+                        .HasDatabaseName("ix_booking_types_category_id_order");
 
                     b.ToTable("booking_types", "bookings");
                 });
@@ -308,6 +325,33 @@ namespace EventsBookingBackend.Migrations.Booking
                     b.Navigation("BookingOptionValues");
 
                     b.Navigation("BookingType");
+                });
+
+            modelBuilder.Entity("EventsBookingBackend.Domain.Booking.Entities.BookingType", b =>
+                {
+                    b.OwnsOne("EventsBookingBackend.Domain.Common.ValueObjects.FileValueObject", "Icon", b1 =>
+                        {
+                            b1.Property<Guid>("BookingTypeId")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("uuid")
+                                .HasColumnName("id");
+
+                            b1.Property<string>("Path")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("icon_path");
+
+                            b1.HasKey("BookingTypeId");
+
+                            b1.ToTable("booking_types", "bookings");
+
+                            b1.WithOwner()
+                                .HasForeignKey("BookingTypeId")
+                                .HasConstraintName("fk_booking_types_booking_types_id");
+                        });
+
+                    b.Navigation("Icon")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("EventsBookingBackend.Domain.Booking.Entities.BookingUserOption", b =>

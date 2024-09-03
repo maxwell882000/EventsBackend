@@ -13,5 +13,6 @@ public class BookingOptionConfiguration : BaseEntityConfiguration<BookingOption>
 
         builder.OwnsMany(e => e.BookingOptionValues).WithOwner();
         builder.Property(e => e.Type).HasConversion<string>();
+        builder.HasIndex("BookingTypeId", "Order").IsUnique();
     }
 }

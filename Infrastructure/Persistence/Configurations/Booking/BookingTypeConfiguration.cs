@@ -11,5 +11,7 @@ public class BookingTypeConfiguration : BaseEntityConfiguration<BookingType>
         base.Configure(builder);
         builder.HasMany(e => e.BookingOptions)
             .WithOne(e => e.BookingType);
+        builder.OwnsOne(e => e.Icon).WithOwner();
+        builder.HasIndex(e => new { e.CategoryId, e.Order }).IsUnique();
     }
 }

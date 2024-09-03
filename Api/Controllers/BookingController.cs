@@ -13,14 +13,14 @@ public class BookingController(IBookService bookService) : AppBaseController
     [ProducesResponseType(StatusCodes.Status200OK)]
     [HttpPost]
     public async Task<ActionResult<CreateBookingResponse>> CreateBooking(
-        [FromQuery] CreateBookingRequest request)
+        [FromBody] CreateBookingRequest request)
     {
         return Ok(await bookService.CreateBooking(request));
     }
 
     [ProducesResponseType(StatusCodes.Status200OK)]
     [HttpGet("get-same-booking-count")]
-    public async Task<ActionResult<GetSameBookingsCountResponse>> GetSimilarBookingCount(
+    public async Task<ActionResult<GetSameBookingsCountResponse>> GetSameBookingCount(
         [FromQuery] GetSameBookingsCountRequest request)
     {
         return Ok(await bookService.GetSameBookingsCount(request));
