@@ -11,7 +11,10 @@ public class UserService(IUserRepository userRepository, IAuthService authServic
     public async Task<GetUserProfileResponse> GetUserProfile()
     {
         var userId = (Guid)authService.GetCurrentAuthUserId()!;
-        return mapper.Map<GetUserProfileResponse>(
+        var auth = await authService.GetCurrentAuthUser();
+        var profile = mapper.Map<GetUserProfileResponse>(
             await userRepository.FindFirst(new GetUserProfileSpecification(userId)));
+        profile.Phone = auth!.PhoneNumber;
+        return profile;
     }
 }

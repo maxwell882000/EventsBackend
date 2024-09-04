@@ -26,6 +26,17 @@ builder.Services.AddCommonExtensions();
 builder.Services.AddServices();
 builder.Services.AddAppOptions(builder.Configuration);
 builder.Services.AddInfraOptions(builder.Configuration);
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowEverything",
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
+
 // builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
@@ -36,6 +47,7 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 });
 var app = builder.Build();
 
+app.UseCors("AllowEverything");
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -64,6 +76,7 @@ var localizationOptions = new RequestLocalizationOptions
     SupportedCultures = supportedCultures,
     SupportedUICultures = supportedCultures
 };
+
 app.UseRequestLocalization(localizationOptions);
 
 app.UseStaticFiles();

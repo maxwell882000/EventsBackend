@@ -9,9 +9,7 @@ using EventsBookingBackend.Application.Services.Book;
 using EventsBookingBackend.Application.Services.Event;
 using EventsBookingBackend.Application.Services.Review;
 using EventsBookingBackend.Application.Services.User;
-using EventsBookingBackend.Domain.Booking.Repositories;
-using EventsBookingBackend.Infrastructure.Repositories.Booking;
-using EventsBookingBackend.Shared.Options.File;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
@@ -33,7 +31,7 @@ public static class ApplicationDi
 
     public static void UseMiddlewares(this IApplicationBuilder services)
     {
-        // services.UseMiddleware<ExceptionMiddleware>();
+        services.UseMiddleware<ExceptionMiddleware>();
     }
 
     public static void AddAppOptions(this IServiceCollection services, IConfiguration configuration)
@@ -78,9 +76,16 @@ public static class ApplicationDi
                 }
             });
         });
+        services.Configure<ApiBehaviorOptions>(options =>
+        {
+            options.SuppressConsumesConstraintForFormFileParameters = true;
+            options.SuppressInferBindingSourcesForParameters = true;
+            options.SuppressModelStateInvalidFilter = true;
+        });
         services.AddControllers(options =>
             {
                 options.Conventions.Add(new RouteTokenTransformerConvention(new SnakeCaseRoutingConvention()));
+                options.Filters.Add<ValidationResponseFilter>();
             })
             .AddNewtonsoftJson(options =>
             {

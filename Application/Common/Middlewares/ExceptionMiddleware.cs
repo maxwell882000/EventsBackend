@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations;
+using EventsBookingBackend.Application.Common.Exceptions;
 using EventsBookingBackend.Application.Models.Common;
 using EventsBookingBackend.Domain.Common.Exceptions;
 
@@ -12,9 +12,20 @@ public class ExceptionMiddleware(ILogger<ExceptionMiddleware> logger, RequestDel
         {
             await next(context);
         }
-        catch (Exception ex) when (ex is ValidationException or DomainRuleException)
+        catch (AppValidationException ex)
         {
-            logger.LogError($"Validation Message: {ex.Message}\n Stack: {ex.StackTrace}");
+            logger.LogError($"App Validation Message: {ex.Message}\n Stack: {ex.StackTrace}");
+            await WriteError(context, StatusCodes.Status400BadRequest, new ErrorModel
+            {
+                Message = ex.Message,
+                StackTrace = ex.StackTrace,
+                Path = context.Request.Path.ToString(),
+                Errors = ex.Errors
+            });
+        }
+        catch (Exception ex) when (ex is AppValidationException or DomainRuleException)
+        {
+            logger.LogError($"App Validation Message: {ex.Message}\n Stack: {ex.StackTrace}");
             await WriteError(context, StatusCodes.Status400BadRequest, new ErrorModel
             {
                 Message = ex.Message,
