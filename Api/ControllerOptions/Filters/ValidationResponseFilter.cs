@@ -11,7 +11,7 @@ public class ValidationResponseFilter : IActionFilter
     {
         if (!context.ModelState.IsValid)
         {
-            throw new AppValidationException("", errors: context
+            throw new AppValidationException("Ошибка валидации", errors: context
                 .ModelState
                 .ToDictionary(e => e.Key.ToCamelCase(),
                     e => e.Value!.Errors.Select(e => e.ErrorMessage).First()
