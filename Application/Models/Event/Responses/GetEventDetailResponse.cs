@@ -20,4 +20,12 @@ public class GetEventDetailResponse
     public bool IsReservable { get; set; } = false;
     public List<FileDto> Images { get; set; } = new();
     public List<WorkHour> WorkHours { get; set; } = new();
+
+    public List<BookingDetail> BookingDetails { get; set; } = new();
+
+    public class BookingDetail
+    {
+        public string Label { get; set; }
+        public decimal Cost { get; set; }
+    }
 }

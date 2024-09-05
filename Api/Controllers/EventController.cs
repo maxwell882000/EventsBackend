@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EventsBookingBackend.Api.Controllers;
 
-public class EventsController(IEventService eventService) : AppBaseController
+public class EventController(IEventService eventService) : AppBaseController
 {
     [ProducesResponseType(StatusCodes.Status200OK)]
     [HttpGet("get-all-events")]

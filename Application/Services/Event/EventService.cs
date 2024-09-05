@@ -3,6 +3,9 @@ using EventsBookingBackend.Application.Common.Exceptions;
 using EventsBookingBackend.Application.Models.Event.Requests;
 using EventsBookingBackend.Application.Models.Event.Responses;
 using EventsBookingBackend.Application.Services.Auth;
+using EventsBookingBackend.Application.Services.Book;
+using EventsBookingBackend.Domain.Booking.Repositories;
+using EventsBookingBackend.Domain.Booking.Specifications;
 using EventsBookingBackend.Domain.Event.Repositories;
 using EventsBookingBackend.Domain.Event.Specifications;
 
@@ -10,6 +13,7 @@ namespace EventsBookingBackend.Application.Services.Event;
 
 public class EventService(
     IEventRepository eventRepository,
+    IBookingTypeRepository bookingTypeRepository,
     IMapper mapper,
     IAuthService authService)
     : IEventService
@@ -23,11 +27,14 @@ public class EventService(
 
     public async Task<GetEventDetailResponse> GetEventDetail(GetEventDetailRequest request)
     {
-        var @event =
+        var eventEntity =
             await eventRepository.FindFirst(
                 new GetEventByIdSpecification(request.Id, authService.GetCurrentAuthUserId()));
-        if (@event == null)
-            throw new AppValidationException("Эвент не найден !");
-        return mapper.Map<GetEventDetailResponse>(@event);
+        if (eventEntity == null)
+            throw new AppValidationException("Cобытие не найдено !");
+        var response = mapper.Map<GetEventDetailResponse>(eventEntity);
+        var bookingTypes = bookingTypeRepository.FindAll(new GetBookingTypeByCategory(eventEntity.CategoryId));
+        response.BookingDetails = mapper.Map<List<GetEventDetailResponse.BookingDetail>>(bookingTypes);
+        return response;
     }
 }

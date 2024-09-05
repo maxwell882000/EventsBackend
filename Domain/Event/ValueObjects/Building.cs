@@ -7,12 +7,12 @@ public class Building : BaseValueObject
     public LatLong LatLong { get; set; }
     public string Address { get; set; }
 
-    private List<WorkHour> _workHours;
+    private List<WorkHour> _workHours = new List<WorkHour>();
 
     public List<WorkHour> WorkHours
     {
         get => _workHours.OrderBy(e => e.Day).ToList();
-        set => _workHours = value;
+        set => _workHours = value ?? new List<WorkHour>();
     }
 
     public WorkHour? WorkDay =>

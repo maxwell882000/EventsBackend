@@ -1,5 +1,6 @@
 using AutoMapper;
 using EventsBookingBackend.Application.Models.Event.Responses;
+using EventsBookingBackend.Domain.Booking.Entities;
 
 namespace EventsBookingBackend.Application.Profiles.Event;
 
@@ -7,6 +8,7 @@ public class EventProfile : Profile
 {
     public EventProfile()
     {
+        CreateMap<BookingType, GetEventDetailResponse.BookingDetail>();
         CreateMap<Domain.Event.Entities.Event, GetAllEventsResponse>()
             .ForMember(e => e.WorkDay,
                 opt => opt.MapFrom(e => e.Building.WorkDay!.Day))

@@ -26,6 +26,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Application\Models\Category\Requests\" />
       <Folder Include="Application\Models\User\Requests\" />
       <Folder Include="Domain\Auth\Services\" />
       <Folder Include="Domain\Category\Services\" />

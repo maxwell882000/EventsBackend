@@ -30,7 +30,7 @@ public class EventConfiguration : BaseEntityConfiguration<EventEntity>
         builder.HasOne(e => e.AggregatedReviews)
             .WithOne(e => e.Event)
             .HasForeignKey<EventAggregatedReview>(e => e.EventId);
-        Seed(builder);
+        // Seed(builder);
     }
 
     private void Seed(EntityTypeBuilder<EventEntity> builder)
