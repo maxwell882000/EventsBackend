@@ -47,7 +47,7 @@ public class EventService(
             IsLiked = await likedEventRepository.Upsert(new LikedEvent()
             {
                 UserId = (Guid)authService.GetCurrentAuthUserId()!,
-                EventId = request.EventId
+                EventId = (Guid)request.EventId!
             })
         };
     }

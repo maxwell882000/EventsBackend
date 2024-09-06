@@ -29,10 +29,9 @@ public class EventController(IEventService eventService) : AppBaseController
     [ProducesResponseType(StatusCodes.Status202Accepted)]
     [HttpPut("like")]
     [Authorize]
-    public async Task<ActionResult> LikeEvent(
+    public async Task<ActionResult<LikeEventResponse>> LikeEvent(
         [FromBody] LikeEventRequest request)
     {
-        await eventService.LikeEvent(request);
-        return Ok();
+        return Ok(await eventService.LikeEvent(request));
     }
 }

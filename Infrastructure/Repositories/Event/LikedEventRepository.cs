@@ -24,11 +24,9 @@ public class LikedEventRepository(EventDbContext context) : ILikedEventRepositor
             await Delete(likedEvent);
             return false;
         }
-        else
-        {
-            await Create(likedEvent);
-            return true;
-        }
+
+        await Create(likedEvent);
+        return true;
     }
 
     private async Task Delete(LikedEvent likedEvent)
