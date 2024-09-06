@@ -10,5 +10,7 @@ public class ReviewProfile : Profile
     {
         CreateMap<Domain.Review.Entities.Review, GetReviewsByEventResponse.UserReviewDto>();
         CreateMap<CreateReviewRequest, Domain.Review.Entities.Review>();
+        CreateMap<UpdateReviewRequest, Domain.Review.Entities.Review>();
+
     }
 }

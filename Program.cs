@@ -37,11 +37,11 @@ builder.Services.AddCors(options =>
         });
 });
 
-// builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
-    var supportedCultures = new[] { new CultureInfo("ru") };
-    options.DefaultRequestCulture = new RequestCulture("ru");
+    var supportedCultures = new[] { new CultureInfo("ru-Ru") };
+    options.DefaultRequestCulture = new RequestCulture("ru-Ru");
     options.SupportedCultures = supportedCultures;
     options.SupportedUICultures = supportedCultures;
 });
@@ -62,22 +62,14 @@ using (var scope = app.Services.CreateScope())
 }
 
 // Configure the HTTP request pipeline.
-var supportedCultures = new[] { new CultureInfo("ru") };
+var supportedCultures = new[] { new CultureInfo("ru-RU") };
 app.UseRequestLocalization(new RequestLocalizationOptions
 {
-    DefaultRequestCulture = new RequestCulture("ru"),
+    DefaultRequestCulture = new RequestCulture("ru-RU"),
     SupportedCultures = supportedCultures,
     SupportedUICultures = supportedCultures
 });
 
-var localizationOptions = new RequestLocalizationOptions
-{
-    DefaultRequestCulture = new RequestCulture("ru"),
-    SupportedCultures = supportedCultures,
-    SupportedUICultures = supportedCultures
-};
-
-app.UseRequestLocalization(localizationOptions);
 
 app.UseStaticFiles();
 

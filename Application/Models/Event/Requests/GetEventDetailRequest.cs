@@ -4,5 +4,5 @@ namespace EventsBookingBackend.Application.Models.Event.Requests;
 
 public class GetEventDetailRequest
 {
-    [Required] public Guid Id { get; set; }
+    [Required] public Guid? Id { get; set; }
 }

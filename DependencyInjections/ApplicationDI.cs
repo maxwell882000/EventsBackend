@@ -34,6 +34,7 @@ public static class ApplicationDi
     public static void UseMiddlewares(this IApplicationBuilder services)
     {
         services.UseMiddleware<ExceptionMiddleware>();
+        services.UseMiddleware<LocalizationMiddleware>();
     }
 
     public static void AddAppOptions(this IServiceCollection services, IConfiguration configuration)

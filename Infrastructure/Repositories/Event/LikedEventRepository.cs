@@ -8,16 +8,30 @@ namespace EventsBookingBackend.Infrastructure.Repositories.Event;
 
 public class LikedEventRepository(EventDbContext context) : ILikedEventRepository
 {
-    public async Task<LikedEvent> Create(LikedEvent likedEvent)
+    private async Task Create(LikedEvent likedEvent)
     {
         await context.LikedEvents.AddAsync(likedEvent);
         await context.SaveChangesAsync();
-        return likedEvent;
     }
 
-    public async Task Delete(LikedEvent likedEvent)
+    public async Task Upsert(LikedEvent likedEvent)
     {
-        await context.LikedEvents.Where(e => e.Id == likedEvent.Id).ExecuteUpdateAsync(setPropertyCalls =>
-            setPropertyCalls.SetProperty(e => e.IsDeleted, true));
+        var isExists =
+            await context.LikedEvents.CountAsync(e =>
+                e.EventId == likedEvent.EventId && e.UserId == likedEvent.UserId) > 0;
+        if (isExists)
+        {
+            await Delete(likedEvent);
+        }
+        else
+        {
+            await Create(likedEvent);
+        }
+    }
+
+    private async Task Delete(LikedEvent likedEvent)
+    {
+        await context.LikedEvents.Where(e => e.EventId == likedEvent.EventId && e.UserId == likedEvent.UserId)
+            .ExecuteDeleteAsync();
     }
 }

@@ -12,6 +12,6 @@ public class Event : BaseEntity
     public FileValueObject PreviewImage { get; set; }
     public List<FileValueObject> Images { get; set; } = new();
     public Building Building { get; set; }
-    public IList<LikedEvent> LikedEvents { get; set; } = new List<LikedEvent>();
+    public IList<LikedEvent>? LikedEvents { get; set; } = new List<LikedEvent>();
     public EventAggregatedReview? AggregatedReviews { get; set; }
 }

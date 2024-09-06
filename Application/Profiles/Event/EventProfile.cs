@@ -1,6 +1,9 @@
+using System.Globalization;
 using AutoMapper;
+using EventsBookingBackend.Application.Models.Event.Dtos;
 using EventsBookingBackend.Application.Models.Event.Responses;
 using EventsBookingBackend.Domain.Booking.Entities;
+using EventsBookingBackend.Domain.Event.ValueObjects;
 
 namespace EventsBookingBackend.Application.Profiles.Event;
 
@@ -8,6 +11,11 @@ public class EventProfile : Profile
 {
     public EventProfile()
     {
+        CreateMap<WorkHour, WorkHourDto>()
+            .ForMember(e => e.Day, opt
+                => opt.MapFrom(e => e.Day))
+            .ForMember(e => e.FromHour, opt => opt.MapFrom(e => e.FromHour + ":00"))
+            .ForMember(e => e.ToHour, opt => opt.MapFrom(e => e.ToHour + ":00"));
         CreateMap<BookingType, GetEventDetailResponse.BookingDetail>();
         CreateMap<Domain.Event.Entities.Event, GetAllEventsResponse>()
             .ForMember(e => e.WorkDay,

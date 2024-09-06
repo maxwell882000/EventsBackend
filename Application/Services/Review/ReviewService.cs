@@ -32,8 +32,8 @@ public class ReviewService(
 
         return new GetReviewsByEventResponse()
         {
-            Mark = reviewAggregate.Mark,
             EventId = request.EventId,
+            Mark = reviewAggregate.Mark,
             ReviewCount = reviewAggregate.ReviewCount,
             UserReviews = userReviewDtos.ToList(),
             OwnReview = ownUserReview
@@ -50,7 +50,13 @@ public class ReviewService(
         var review = mapper.Map<Domain.Review.Entities.Review>(request);
         review.UserId = userId;
         var result = await reviewRepository.Create(review);
-        return new() { Id = result.Id };
+        var reviewAggregate =
+            await reviewAggregateRepository.GetReviewAggregate(new GetEventReviewsSpecification(review.EventId));
+        return new()
+        {
+            Id = result.Id, Mark = reviewAggregate.Mark,
+            ReviewCount = reviewAggregate.ReviewCount,
+        };
     }
 
     public async Task<UpdateReviewResponse> UpdateReview(UpdateReviewRequest request)
@@ -61,8 +67,14 @@ public class ReviewService(
         if (existingReview is null)
             throw new AppValidationException("Оценка не найдена");
         var review = mapper.Map(request, existingReview);
-        var result = await reviewRepository.Create(review);
-        return new() { Id = result.Id };
+        var result = await reviewRepository.Update(review);
+        var reviewAggregate =
+            await reviewAggregateRepository.GetReviewAggregate(new GetEventReviewsSpecification(review.EventId));
+        return new()
+        {
+            Id = result.Id, Mark = reviewAggregate.Mark,
+            ReviewCount = reviewAggregate.ReviewCount,
+        };
     }
 
 

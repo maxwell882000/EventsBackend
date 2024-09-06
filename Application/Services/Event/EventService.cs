@@ -6,6 +6,7 @@ using EventsBookingBackend.Application.Services.Auth;
 using EventsBookingBackend.Application.Services.Book;
 using EventsBookingBackend.Domain.Booking.Repositories;
 using EventsBookingBackend.Domain.Booking.Specifications;
+using EventsBookingBackend.Domain.Event.Entities;
 using EventsBookingBackend.Domain.Event.Repositories;
 using EventsBookingBackend.Domain.Event.Specifications;
 
@@ -13,6 +14,7 @@ namespace EventsBookingBackend.Application.Services.Event;
 
 public class EventService(
     IEventRepository eventRepository,
+    ILikedEventRepository likedEventRepository,
     IBookingTypeRepository bookingTypeRepository,
     IMapper mapper,
     IAuthService authService)
@@ -29,12 +31,21 @@ public class EventService(
     {
         var eventEntity =
             await eventRepository.FindFirst(
-                new GetEventByIdSpecification(request.Id, authService.GetCurrentAuthUserId()));
+                new GetEventByIdSpecification((Guid)request.Id!, authService.GetCurrentAuthUserId()));
         if (eventEntity == null)
             throw new AppValidationException("Cобытие не найдено !");
         var response = mapper.Map<GetEventDetailResponse>(eventEntity);
-        var bookingTypes = bookingTypeRepository.FindAll(new GetBookingTypeByCategory(eventEntity.CategoryId));
+        var bookingTypes = await bookingTypeRepository.FindAll(new GetBookingTypeByCategory(eventEntity.CategoryId));
         response.BookingDetails = mapper.Map<List<GetEventDetailResponse.BookingDetail>>(bookingTypes);
         return response;
+    }
+
+    public async Task LikeEvent(LikeEventRequest request)
+    {
+        await likedEventRepository.Upsert(new LikedEvent()
+        {
+            UserId = (Guid)authService.GetCurrentAuthUserId()!,
+            EventId = request.EventId
+        });
     }
 }

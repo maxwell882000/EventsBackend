@@ -1,4 +1,5 @@
 using EventsBookingBackend.Application.Models.Common;
+using EventsBookingBackend.Application.Models.Event.Dtos;
 using EventsBookingBackend.Domain.Event.ValueObjects;
 
 namespace EventsBookingBackend.Application.Models.Event.Responses;
@@ -19,7 +20,8 @@ public class GetEventDetailResponse
     public bool IsLiked { get; set; } = false;
     public bool IsReservable { get; set; } = false;
     public List<FileDto> Images { get; set; } = new();
-    public List<WorkHour> WorkHours { get; set; } = new();
+
+    public List<WorkHourDto> WorkHours { get; set; }
 
     public List<BookingDetail> BookingDetails { get; set; } = new();
 
@@ -27,5 +29,6 @@ public class GetEventDetailResponse
     {
         public string Label { get; set; }
         public decimal Cost { get; set; }
+        public FileDto Icon { get; set; }
     }
 }

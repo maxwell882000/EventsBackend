@@ -7,4 +7,6 @@ public interface IEventService
 {
     public Task<IList<GetAllEventsResponse>> GetAllEvents();
     public Task<GetEventDetailResponse> GetEventDetail(GetEventDetailRequest request);
+    public Task LikeEvent(LikeEventRequest request);
+
 }

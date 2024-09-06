@@ -11,7 +11,7 @@ public class Building : BaseValueObject
 
     public List<WorkHour> WorkHours
     {
-        get => _workHours.OrderBy(e => e.Day).ToList();
+        get => _workHours.OrderBy(e => e.Day == DayOfWeek.Sunday ? 7 : (int)e.Day).ToList();
         set => _workHours = value ?? new List<WorkHour>();
     }
 
