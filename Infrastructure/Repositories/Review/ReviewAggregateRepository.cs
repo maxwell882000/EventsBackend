@@ -8,9 +8,11 @@ namespace EventsBookingBackend.Infrastructure.Repositories.Review;
 
 public class ReviewAggregateRepository(ReviewDbContext reviewDbContext) : IReviewAggregateRepository
 {
-    public async Task<ReviewAggregate> GetReviewAggregate(ISpecification<Domain.Review.Entities.Review> specification)
+    public async Task<ReviewAggregate> GetReviewAggregate(ISpecification<Domain.Review.Entities.Review>? specification)
     {
-        var reviewsQuery = specification.Apply(reviewDbContext.Reviews);
+        var reviewsQuery = specification == null
+            ? reviewDbContext.Reviews
+            : specification.Apply(reviewDbContext.Reviews);
         var reviewCount = await reviewsQuery.CountAsync();
         var overallMark = await reviewsQuery.SumAsync(e => e.Mark);
         return new ReviewAggregate(overallMark, reviewCount);

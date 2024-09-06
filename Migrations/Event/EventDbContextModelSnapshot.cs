@@ -81,8 +81,8 @@ namespace EventsBookingBackend.Migrations.Event
                         .HasColumnType("boolean")
                         .HasColumnName("is_deleted");
 
-                    b.Property<float>("OverallMark")
-                        .HasColumnType("real")
+                    b.Property<double>("OverallMark")
+                        .HasColumnType("double precision")
                         .HasColumnName("overall_mark");
 
                     b.Property<int>("ReviewCount")

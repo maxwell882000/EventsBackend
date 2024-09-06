@@ -48,7 +48,7 @@ namespace EventsBookingBackend.Migrations.Event
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     event_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    overall_mark = table.Column<float>(type: "real", nullable: false),
+                    overall_mark = table.Column<double>(type: "double precision", nullable: false),
                     review_count = table.Column<int>(type: "integer", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),

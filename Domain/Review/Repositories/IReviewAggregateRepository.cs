@@ -5,5 +5,5 @@ namespace EventsBookingBackend.Domain.Review.Repositories;
 
 public interface IReviewAggregateRepository
 {
-    public Task<ReviewAggregate> GetReviewAggregate(ISpecification<Entities.Review> specification);
+    public Task<ReviewAggregate> GetReviewAggregate(ISpecification<Entities.Review>? specification);
 }

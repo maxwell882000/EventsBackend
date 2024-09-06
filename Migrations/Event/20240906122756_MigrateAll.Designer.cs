@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EventsBookingBackend.Migrations.Event
 {
     [DbContext(typeof(EventDbContext))]
-    [Migration("20240905113722_MigrateAll")]
+    [Migration("20240906122756_MigrateAll")]
     partial class MigrateAll
     {
         /// <inheritdoc />
@@ -84,8 +84,8 @@ namespace EventsBookingBackend.Migrations.Event
                         .HasColumnType("boolean")
                         .HasColumnName("is_deleted");
 
-                    b.Property<float>("OverallMark")
-                        .HasColumnType("real")
+                    b.Property<double>("OverallMark")
+                        .HasColumnType("double precision")
                         .HasColumnName("overall_mark");
 
                     b.Property<int>("ReviewCount")

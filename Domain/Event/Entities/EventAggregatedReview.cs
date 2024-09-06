@@ -6,6 +6,6 @@ public class EventAggregatedReview : BaseEntity
 {
     public Event Event { get; set; }
     public Guid EventId { get; set; }
-    public float OverallMark { get; set; }
+    public double OverallMark { get; set; }
     public int ReviewCount { get; set; }
 }

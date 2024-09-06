@@ -118,6 +118,7 @@ public static class InfrastructureDi
 
         services.AddTransient<IEventRepository, EventRepository>();
         services.AddTransient<ILikedEventRepository, LikedEventRepository>();
+        services.AddTransient<IEventAggregatedReviewRepository, EventAggregatedReviewRepository>();
 
         #endregion
 

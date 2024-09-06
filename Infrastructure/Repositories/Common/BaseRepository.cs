@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using EventsBookingBackend.Domain.Common.Specifications;
+using EventsBookingBackend.Infrastructure.Persistence.DbContexts;
 
 namespace EventsBookingBackend.Infrastructure.Repositories.Common
 {

@@ -22,13 +22,13 @@ public class ReviewService(
     public async Task<GetReviewsByEventResponse> GetReviewsByEvent(GetReviewsByEventRequest request)
     {
         var currentUserId = authService.GetCurrentAuthUserId();
-        var reviews = await reviewRepository.FindAll(new GetEventReviewsSpecification(request.EventId));
+        var reviews = await reviewRepository.FindAll(new GetEventReviews(request.EventId));
         var users = await userRepository.FindAll(
             new GetUserProfilesSpecification(reviews.Select(e => e.UserId).ToList()));
         var userReviewDtos = GetUserReviewDto(users, reviews, (user) => user.Id != currentUserId);
         var ownUserReview = GetUserReviewDto(users, reviews, (user) => user.Id == currentUserId).FirstOrDefault();
         var reviewAggregate =
-            await reviewAggregateRepository.GetReviewAggregate(new GetEventReviewsSpecification(request.EventId));
+            await reviewAggregateRepository.GetReviewAggregate(new GetEventReviews(request.EventId));
 
         return new GetReviewsByEventResponse()
         {
@@ -51,7 +51,7 @@ public class ReviewService(
         review.UserId = userId;
         var result = await reviewRepository.Create(review);
         var reviewAggregate =
-            await reviewAggregateRepository.GetReviewAggregate(new GetEventReviewsSpecification(review.EventId));
+            await reviewAggregateRepository.GetReviewAggregate(new GetEventReviews(review.EventId));
         return new()
         {
             Id = result.Id, Mark = reviewAggregate.Mark,
@@ -69,7 +69,7 @@ public class ReviewService(
         var review = mapper.Map(request, existingReview);
         var result = await reviewRepository.Update(review);
         var reviewAggregate =
-            await reviewAggregateRepository.GetReviewAggregate(new GetEventReviewsSpecification(review.EventId));
+            await reviewAggregateRepository.GetReviewAggregate(new GetEventReviews(review.EventId));
         return new()
         {
             Id = result.Id, Mark = reviewAggregate.Mark,
