@@ -40,12 +40,15 @@ public class EventService(
         return response;
     }
 
-    public async Task LikeEvent(LikeEventRequest request)
+    public async Task<LikeEventResponse> LikeEvent(LikeEventRequest request)
     {
-        await likedEventRepository.Upsert(new LikedEvent()
+        return new LikeEventResponse()
         {
-            UserId = (Guid)authService.GetCurrentAuthUserId()!,
-            EventId = request.EventId
-        });
+            IsLiked = await likedEventRepository.Upsert(new LikedEvent()
+            {
+                UserId = (Guid)authService.GetCurrentAuthUserId()!,
+                EventId = request.EventId
+            })
+        };
     }
 }

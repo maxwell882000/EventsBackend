@@ -5,5 +5,5 @@ namespace EventsBookingBackend.Domain.Event.Repositories;
 
 public interface ILikedEventRepository
 {
-    public Task Upsert(LikedEvent likedEvent);
+    public Task<bool> Upsert(LikedEvent likedEvent);
 }

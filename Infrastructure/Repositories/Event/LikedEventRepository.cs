@@ -14,7 +14,7 @@ public class LikedEventRepository(EventDbContext context) : ILikedEventRepositor
         await context.SaveChangesAsync();
     }
 
-    public async Task Upsert(LikedEvent likedEvent)
+    public async Task<bool> Upsert(LikedEvent likedEvent)
     {
         var isExists =
             await context.LikedEvents.CountAsync(e =>
@@ -22,10 +22,12 @@ public class LikedEventRepository(EventDbContext context) : ILikedEventRepositor
         if (isExists)
         {
             await Delete(likedEvent);
+            return false;
         }
         else
         {
             await Create(likedEvent);
+            return true;
         }
     }
 

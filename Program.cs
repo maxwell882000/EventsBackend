@@ -31,9 +31,11 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowEverything",
         builder =>
         {
-            builder.AllowAnyOrigin()
+            builder
+                .WithOrigins("http://localhost:5173")
                 .AllowAnyHeader()
-                .AllowAnyMethod();
+                .AllowAnyMethod()
+                .AllowCredentials();
         });
 });
 
@@ -46,8 +48,8 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     options.SupportedUICultures = supportedCultures;
 });
 var app = builder.Build();
-
 app.UseCors("AllowEverything");
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -77,7 +79,7 @@ app.UseMiddlewares();
 
 app.UseHttpsRedirection();
 
-// app.UseAuthorization();
+app.UseAuthorization();
 app.UseAuthentication();
 
 app.MapControllers();

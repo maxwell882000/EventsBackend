@@ -1,5 +1,4 @@
 using EventsBookingBackend.Application.Common;
-using EventsBookingBackend.Application.Models.Common;
 using EventsBookingBackend.Application.Models.Event.Requests;
 using EventsBookingBackend.Application.Models.Event.Responses;
 using EventsBookingBackend.Application.Services.Event;
@@ -30,7 +29,7 @@ public class EventController(IEventService eventService) : AppBaseController
     [ProducesResponseType(StatusCodes.Status202Accepted)]
     [HttpPut("like")]
     [Authorize]
-    public async Task<ActionResult<IList<GetEventDetailResponse>>> LikeEvent(
+    public async Task<ActionResult> LikeEvent(
         [FromBody] LikeEventRequest request)
     {
         await eventService.LikeEvent(request);
