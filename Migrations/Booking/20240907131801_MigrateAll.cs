@@ -123,7 +123,8 @@ namespace EventsBookingBackend.Migrations.Booking
                     booking_option_id = table.Column<Guid>(type: "uuid", nullable: false),
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    value = table.Column<string>(type: "text", nullable: false)
+                    value = table.Column<string>(type: "text", nullable: false),
+                    order = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -144,6 +145,7 @@ namespace EventsBookingBackend.Migrations.Booking
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "uuid_generate_v4()"),
                     booking_option_value_value = table.Column<string>(type: "text", nullable: false),
+                    booking_option_value_order = table.Column<int>(type: "integer", nullable: false),
                     booking_id = table.Column<Guid>(type: "uuid", nullable: false),
                     option_id = table.Column<Guid>(type: "uuid", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),

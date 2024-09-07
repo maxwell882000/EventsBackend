@@ -307,6 +307,10 @@ namespace EventsBookingBackend.Migrations.Booking
 
                             NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b1.Property<int>("Id"));
 
+                            b1.Property<int>("Order")
+                                .HasColumnType("integer")
+                                .HasColumnName("order");
+
                             b1.Property<string>("Value")
                                 .IsRequired()
                                 .HasColumnType("text")
@@ -376,6 +380,10 @@ namespace EventsBookingBackend.Migrations.Booking
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("uuid")
                                 .HasColumnName("id");
+
+                            b1.Property<int>("Order")
+                                .HasColumnType("integer")
+                                .HasColumnName("booking_option_value_order");
 
                             b1.Property<string>("Value")
                                 .IsRequired()

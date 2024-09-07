@@ -5,7 +5,8 @@ namespace EventsBookingBackend.Application.Models.Booking.Dto;
 
 public class BookingOptionDto
 {
-    [Required] public string? Label { get; set; }
-    [Required] public BookingOptionType? Type { get; set; }
+    public Guid? Id { get; set; }
+    public string? Label { get; set; }
+    public BookingOptionType? Type { get; set; }
     public List<BookingOptionValueDto>? BookingOptionValues { get; set; }
 }

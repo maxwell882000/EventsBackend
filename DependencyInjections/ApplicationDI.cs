@@ -53,6 +53,7 @@ public static class ApplicationDi
         services.AddSwaggerGen(c =>
         {
             c.OperationFilter<SwaggerProducesResponseTypesFilter>();
+            c.DescribeAllParametersInCamelCase();
             // Define the BearerAuth scheme
             c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
