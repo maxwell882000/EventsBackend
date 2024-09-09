@@ -19,5 +19,6 @@ public class BookingProfile : Profile
         CreateMap<GetSameBookingsCountRequest, Domain.Booking.Entities.Booking>();
         CreateMap<BookingOption, BookingOptionDto>().ReverseMap();
         CreateMap<BookingOptionValue, BookingOptionValueDto>().ReverseMap();
+        CreateMap<BookingUserOptionDto, BookingUserOption>().ReverseMap();
     }
 }

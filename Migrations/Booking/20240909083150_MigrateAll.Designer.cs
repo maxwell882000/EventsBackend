@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EventsBookingBackend.Migrations.Booking
 {
     [DbContext(typeof(BookingDbContext))]
-    [Migration("20240907131801_MigrateAll")]
+    [Migration("20240909083150_MigrateAll")]
     partial class MigrateAll
     {
         /// <inheritdoc />
@@ -70,10 +70,47 @@ namespace EventsBookingBackend.Migrations.Booking
                     b.HasIndex("BookingTypeId")
                         .HasDatabaseName("ix_bookings_booking_type_id");
 
+                    b.HasIndex("EventId")
+                        .HasDatabaseName("ix_bookings_event_id");
+
                     b.HasIndex("IsDeleted")
                         .HasDatabaseName("ix_bookings_is_deleted");
 
                     b.ToTable("bookings", "bookings");
+                });
+
+            modelBuilder.Entity("EventsBookingBackend.Domain.Booking.Entities.BookingEvent", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id")
+                        .HasDefaultValueSql("uuid_generate_v4()");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("Id")
+                        .HasName("pk_booking_events");
+
+                    b.HasIndex("IsDeleted")
+                        .HasDatabaseName("ix_booking_events_is_deleted");
+
+                    b.ToTable("booking_events", "bookings");
                 });
 
             modelBuilder.Entity("EventsBookingBackend.Domain.Booking.Entities.BookingLimit", b =>
@@ -277,7 +314,16 @@ namespace EventsBookingBackend.Migrations.Booking
                         .IsRequired()
                         .HasConstraintName("fk_bookings_booking_types_booking_type_id");
 
+                    b.HasOne("EventsBookingBackend.Domain.Booking.Entities.BookingEvent", "Event")
+                        .WithMany()
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_bookings_booking_events_event_id");
+
                     b.Navigation("BookingType");
+
+                    b.Navigation("Event");
                 });
 
             modelBuilder.Entity("EventsBookingBackend.Domain.Booking.Entities.BookingLimit", b =>

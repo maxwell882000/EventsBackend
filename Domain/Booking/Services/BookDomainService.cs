@@ -5,12 +5,23 @@ using EventsBookingBackend.Domain.Common.Exceptions;
 
 namespace EventsBookingBackend.Domain.Booking.Services;
 
-public class BookDomainService(IBookingRepository bookingRepository, IBookingLimitRepository bookingLimitRepository)
+public class BookDomainService(
+    IBookingRepository bookingRepository,
+    IBookingOptionRepository bookingOptionRepository,
+    IBookingLimitRepository bookingLimitRepository)
     : IBookingDomainService
 {
     public async Task<Entities.Booking> CreateBooking(Entities.Booking booking)
     {
+        await ValidateBookingOptionsValue(booking);
         var currentLimit = await GetBookingLimit(booking);
+
+        var isSameBookingWithUser = await CheckSameBookingWithUser(booking);
+
+        if (isSameBookingWithUser)
+        {
+            throw new DomainRuleException("Вы уже забранировали !");
+        }
 
         var bookingCount = await SameBookingsCount(booking);
 
@@ -22,6 +33,29 @@ public class BookDomainService(IBookingRepository bookingRepository, IBookingLim
         await bookingRepository.Create(booking);
 
         return booking;
+    }
+
+    private async Task ValidateBookingOptionsValue(Entities.Booking booking)
+    {
+        var options = (await
+                bookingOptionRepository.FindAll(
+                    new GetBookingOptionsByIds(booking.BookingOptions.Select(e => e.OptionId).ToList())))
+            .ToDictionary(e => e.Id);
+        foreach (var bookingOption in booking.BookingOptions)
+        {
+            if (options.TryGetValue(bookingOption.OptionId, out var option))
+            {
+                bookingOption.Option = option;
+                bookingOption.ValidateValue();
+            }
+        }
+    }
+
+    public async Task<bool> CheckSameBookingWithUser(Entities.Booking booking)
+    {
+        var allBookings = await bookingRepository
+            .FindAll(new GetSimilarBookings(booking.EventId, booking.BookingTypeId));
+        return allBookings.Any(e => e.UserId == booking.UserId && booking.IsSameBooking(e.BookingOptions));
     }
 
     public async Task<int> SameBookingsCount(Entities.Booking booking)

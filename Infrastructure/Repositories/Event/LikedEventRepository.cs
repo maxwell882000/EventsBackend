@@ -6,12 +6,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EventsBookingBackend.Infrastructure.Repositories.Event;
 
-public class LikedEventRepository(EventDbContext context) : ILikedEventRepository
+public class LikedEventRepository(EventDbContext context)
+    : BaseRepository<LikedEvent, EventDbContext>(context), ILikedEventRepository
 {
     private async Task Create(LikedEvent likedEvent)
     {
-        await context.LikedEvents.AddAsync(likedEvent);
-        await context.SaveChangesAsync();
+        await base.Create(likedEvent);
     }
 
     public async Task<bool> Upsert(LikedEvent likedEvent)

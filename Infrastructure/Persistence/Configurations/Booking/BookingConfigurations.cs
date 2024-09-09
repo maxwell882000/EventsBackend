@@ -18,5 +18,7 @@ public class BookingConfigurations : BaseEntityConfiguration<Domain.Booking.Enti
         builder.HasOne(e => e.BookingType).WithMany().HasForeignKey(e => e.BookingTypeId);
 
         builder.Property(e => e.Status).HasConversion<string>();
+
+        builder.HasOne(e => e.Event).WithMany().HasForeignKey(e => e.EventId);
     }
 }

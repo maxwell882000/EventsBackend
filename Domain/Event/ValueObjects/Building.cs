@@ -16,7 +16,9 @@ public class Building : BaseValueObject
     }
 
     public WorkHour? WorkDay =>
-        WorkHours.FirstOrDefault(e => e.Day >= DateTime.Now.DayOfWeek) ?? WorkHours.FirstOrDefault();
+        WorkHours
+            .OrderBy(e => e.Day)
+            .FirstOrDefault(e => e.Day >= DateTime.Now.DayOfWeek) ?? WorkHours.FirstOrDefault();
 
     public bool IsOpen => DateTime.Now.DayOfWeek == WorkDay?.Day && WorkDay?.FromHour <= DateTime.Now.Hour &&
                           WorkDay?.ToHour >= DateTime.Now.Hour;

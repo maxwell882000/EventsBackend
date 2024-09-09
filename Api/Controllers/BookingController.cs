@@ -19,9 +19,9 @@ public class BookingController(IBookService bookService) : AppBaseController
     }
 
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [HttpGet("get-same-booking-count")]
+    [HttpPost("get-same-booking-count")]
     public async Task<ActionResult<GetSameBookingsCountResponse>> GetSameBookingCount(
-        [FromQuery] GetSameBookingsCountRequest request)
+        [FromBody] GetSameBookingsCountRequest request)
     {
         return Ok(await bookService.GetSameBookingsCount(request));
     }

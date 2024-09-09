@@ -36,7 +36,8 @@ public class EventProfile : Profile
                 opt => opt.MapFrom(e => e.AggregatedReviews!.ReviewCount))
             .ForMember(e => e.CategoryId,
                 opt => opt.MapFrom(e => e.CategoryId))
-            .ForMember(e => e.IsLiked, opt => opt.MapFrom(e => e.LikedEvents.Count > 0));
+            .ForMember(e => e.IsLiked, opt
+                => opt.MapFrom(e => e.LikedEvents.Count > 0));
 
         CreateMap<Domain.Event.Entities.Event, GetEventDetailResponse>()
             .ForMember(e => e.WorkHours,

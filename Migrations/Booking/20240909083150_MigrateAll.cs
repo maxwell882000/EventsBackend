@@ -19,6 +19,22 @@ namespace EventsBookingBackend.Migrations.Booking
                 .Annotation("Npgsql:PostgresExtension:uuid-ossp", ",,");
 
             migrationBuilder.CreateTable(
+                name: "booking_events",
+                schema: "bookings",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "uuid_generate_v4()"),
+                    name = table.Column<string>(type: "text", nullable: false),
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    is_deleted = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_booking_events", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "booking_types",
                 schema: "bookings",
                 columns: table => new
@@ -107,6 +123,13 @@ namespace EventsBookingBackend.Migrations.Booking
                 {
                     table.PrimaryKey("pk_bookings", x => x.id);
                     table.ForeignKey(
+                        name: "fk_bookings_booking_events_event_id",
+                        column: x => x.event_id,
+                        principalSchema: "bookings",
+                        principalTable: "booking_events",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "fk_bookings_booking_types_booking_type_id",
                         column: x => x.booking_type_id,
                         principalSchema: "bookings",
@@ -172,6 +195,12 @@ namespace EventsBookingBackend.Migrations.Booking
                 });
 
             migrationBuilder.CreateIndex(
+                name: "ix_booking_events_is_deleted",
+                schema: "bookings",
+                table: "booking_events",
+                column: "is_deleted");
+
+            migrationBuilder.CreateIndex(
                 name: "ix_booking_limits_booking_type_id",
                 schema: "bookings",
                 table: "booking_limits",
@@ -234,6 +263,12 @@ namespace EventsBookingBackend.Migrations.Booking
                 column: "booking_type_id");
 
             migrationBuilder.CreateIndex(
+                name: "ix_bookings_event_id",
+                schema: "bookings",
+                table: "bookings",
+                column: "event_id");
+
+            migrationBuilder.CreateIndex(
                 name: "ix_bookings_is_deleted",
                 schema: "bookings",
                 table: "bookings",
@@ -261,6 +296,10 @@ namespace EventsBookingBackend.Migrations.Booking
 
             migrationBuilder.DropTable(
                 name: "bookings",
+                schema: "bookings");
+
+            migrationBuilder.DropTable(
+                name: "booking_events",
                 schema: "bookings");
 
             migrationBuilder.DropTable(

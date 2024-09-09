@@ -105,6 +105,7 @@ public static class InfrastructureDi
         services.AddTransient<IBookingOptionRepository, BookingOptionRepository>();
         services.AddTransient<IBookingRepository, BookingRepository>();
         services.AddTransient<IBookingLimitRepository, BookingLimitRepository>();
+        services.AddTransient<IBookingEventRepository, BookingEventRepository>();
 
         #endregion
 
