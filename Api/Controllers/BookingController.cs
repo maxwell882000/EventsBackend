@@ -18,6 +18,16 @@ public class BookingController(IBookService bookService) : AppBaseController
         return Ok(await bookService.CreateBooking(request));
     }
 
+
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [HttpDelete("cancel-booking")]
+    public async Task<ActionResult> CancelBooking([FromQuery] CancelBookingRequest request)
+    {
+        await bookService.CancelBooking(request);
+        return Ok();
+    }
+
+
     [ProducesResponseType(StatusCodes.Status200OK)]
     [HttpPost("get-same-booking-count")]
     public async Task<ActionResult<GetSameBookingsCountResponse>> GetSameBookingCount(

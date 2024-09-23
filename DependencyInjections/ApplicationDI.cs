@@ -1,6 +1,6 @@
+using EventsBookingBackend.Api.ControllerOptions.Conventions;
 using EventsBookingBackend.Api.ControllerOptions.Filters;
 using EventsBookingBackend.Api.ControllerOptions.Types;
-using EventsBookingBackend.Api.Conventions;
 using EventsBookingBackend.Api.Identity;
 using EventsBookingBackend.Api.Options;
 using EventsBookingBackend.Application.Common.Middlewares;

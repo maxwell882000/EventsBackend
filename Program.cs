@@ -48,6 +48,7 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     options.SupportedUICultures = supportedCultures;
 });
 var app = builder.Build();
+
 app.UseCors("AllowEverything");
 
 // Configure the HTTP request pipeline.
@@ -55,12 +56,6 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI(c => c.DisplayRequestDuration());
-}
-
-using (var scope = app.Services.CreateScope())
-{
-    var dbContext = scope.ServiceProvider.GetRequiredService<UserDbContext>();
-    dbContext.Database.Migrate();
 }
 
 // Configure the HTTP request pipeline.

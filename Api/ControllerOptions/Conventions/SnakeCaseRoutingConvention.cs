@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace EventsBookingBackend.Api.Conventions;
+namespace EventsBookingBackend.Api.ControllerOptions.Conventions;
 
 public class SnakeCaseRoutingConvention : IOutboundParameterTransformer
 {

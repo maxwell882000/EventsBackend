@@ -32,6 +32,11 @@ public class BookService(
         };
     }
 
+    public async Task CancelBooking(CancelBookingRequest request)
+    {
+        await bookingDomainService.CancelBooking(request.BookingId);
+    }
+
     public async Task<GetSameBookingsCountResponse> GetSameBookingsCount(GetSameBookingsCountRequest request)
     {
         var booking = mapper.Map<Booking>(request);

@@ -7,6 +7,7 @@ public interface IBookService
 {
     public Task<CreateBookingResponse> CreateBooking(CreateBookingRequest request);
 
-    public Task<GetSameBookingsCountResponse> GetSameBookingsCount(GetSameBookingsCountRequest request);
+    public Task CancelBooking(CancelBookingRequest request);
 
+    public Task<GetSameBookingsCountResponse> GetSameBookingsCount(GetSameBookingsCountRequest request);
 }

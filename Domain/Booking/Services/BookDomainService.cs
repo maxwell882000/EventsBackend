@@ -1,7 +1,9 @@
 using EventsBookingBackend.Domain.Booking.Entities;
 using EventsBookingBackend.Domain.Booking.Repositories;
 using EventsBookingBackend.Domain.Booking.Specifications;
+using EventsBookingBackend.Domain.Booking.ValueObjects;
 using EventsBookingBackend.Domain.Common.Exceptions;
+using Microsoft.OpenApi.Extensions;
 
 namespace EventsBookingBackend.Domain.Booking.Services;
 
@@ -70,5 +72,16 @@ public class BookDomainService(
     {
         return await bookingLimitRepository.FindFirst(new GetEventBookingLimit(booking.EventId))
                ?? await bookingLimitRepository.FindFirst(new GetDefaultBookingLimit(booking.BookingTypeId));
+    }
+
+    public async Task CancelBooking(Guid bookingId)
+    {
+        var booking = await bookingRepository.FindFirst(new GetBookingById(bookingId));
+        if (booking == null)
+            throw new DomainRuleException("Не существует бронирования с таким индефекатором");
+        if (booking.Status != BookingStatus.Waiting)
+            throw new DomainRuleException($"Бронирования уже в статусе {booking.Status.GetDisplayName()}");
+        booking.Status = BookingStatus.Canceled;
+        await bookingRepository.Update(booking);
     }
 }
