@@ -14,7 +14,7 @@ public class ValidationResponseFilter : IActionFilter
             throw new AppValidationException("Ошибка валидации", errors: context
                 .ModelState
                 .ToDictionary(e => e.Key.ToCamelCase(),
-                    e => e.Value!.Errors.Select(e => e.ErrorMessage).First()
+                    e => e.Value!.Errors.Select(e => e.ErrorMessage).FirstOrDefault() ?? ""
                 ));
         }
     }

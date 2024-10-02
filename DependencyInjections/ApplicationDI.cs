@@ -100,6 +100,7 @@ public static class ApplicationDi
                 options.SerializerSettings.Converters.Add(new JsonClaimConverter());
                 options.SerializerSettings.Converters.Add(new JsonClaimsPrincipalConverter());
                 options.SerializerSettings.Converters.Add(new JsonClaimsIdentityConverter());
+                options.SerializerSettings.Converters.Add(new PaymeMethodConverter());
                 options.SerializerSettings.Converters.Add(new FileDtoConverter(services.BuildServiceProvider()
                     .GetRequiredService<IOptions<HostOption>>()));
             });

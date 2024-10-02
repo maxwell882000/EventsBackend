@@ -1,3 +1,4 @@
+using EventsBookingBackend.Api.ControllerOptions.Auth;
 using EventsBookingBackend.Api.Identity;
 using EventsBookingBackend.Domain.Auth.Entities;
 using EventsBookingBackend.Domain.Booking.Repositories;
@@ -7,6 +8,7 @@ using EventsBookingBackend.Domain.File.Repositories;
 using EventsBookingBackend.Domain.Files.Services;
 using EventsBookingBackend.Domain.Review.Repositories;
 using EventsBookingBackend.Domain.User.Repositories;
+using EventsBookingBackend.Infrastructure.Payment.Payme.Option;
 using EventsBookingBackend.Infrastructure.Persistence.DbContexts;
 using EventsBookingBackend.Infrastructure.Repositories.Event;
 using EventsBookingBackend.Infrastructure.Repositories.File;
@@ -17,6 +19,7 @@ using EventsBookingBackend.Infrastructure.Repositories.Review;
 using EventsBookingBackend.Infrastructure.Repositories.User;
 using EventsBookingBackend.Infrastructure.Services.File;
 using EventsBookingBackend.Shared.Options.File;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -50,6 +53,8 @@ public static class InfrastructureDi
                 cfg.DefaultScheme = BearerTokenDefaults.AuthenticationScheme;
                 cfg.DefaultForbidScheme = BearerTokenDefaults.AuthenticationScheme;
             })
+            .AddScheme<AuthenticationSchemeOptions, PaymeBasicAuthenticationHandler>(
+                "Payme", null)
             .AddBearerToken();
     }
 
@@ -94,6 +99,11 @@ public static class InfrastructureDi
             options.UseNpgsql(connectionString, x =>
                     x.MigrationsHistoryTable(HistoryRepository.DefaultTableName,
                         schema: "files"))
+                .UseSnakeCaseNamingConvention());
+        services.AddDbContextPool<PaymeDbContext>(options =>
+            options.UseNpgsql(connectionString, x =>
+                    x.MigrationsHistoryTable(HistoryRepository.DefaultTableName,
+                        schema: "payme"))
                 .UseSnakeCaseNamingConvention());
     }
 
@@ -157,6 +167,8 @@ public static class InfrastructureDi
     {
         #region File
 
+        services.Configure<PaymeOption>(
+            configuration.GetSection(nameof(PaymeOption)));
         services.Configure<FileOption>(
             configuration.GetSection(nameof(FileOption)));
 

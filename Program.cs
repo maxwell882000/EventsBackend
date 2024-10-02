@@ -1,6 +1,7 @@
 using System.Globalization;
 using System.Security.Claims;
 using EventsBookingBackend.DependencyInjections;
+using EventsBookingBackend.Infrastructure.Payment.Payme.DI;
 using EventsBookingBackend.Infrastructure.Persistence.DbContexts;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.BearerToken;
@@ -26,6 +27,7 @@ builder.Services.AddCommonExtensions();
 builder.Services.AddServices();
 builder.Services.AddAppOptions(builder.Configuration);
 builder.Services.AddInfraOptions(builder.Configuration);
+builder.Services.AddPayme();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowEverything",
