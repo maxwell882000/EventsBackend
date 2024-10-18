@@ -4,15 +4,9 @@ using AutoMapper;
 using EventsBookingBackend.Application.Common.Exceptions;
 using EventsBookingBackend.Application.Models.Auth.Dto;
 using EventsBookingBackend.Application.Models.Auth.Requests;
-using EventsBookingBackend.Application.Models.Auth.Responses;
-using EventsBookingBackend.Domain.User.Entities;
 using EventsBookingBackend.Domain.User.Repositories;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity.Data;
-using Microsoft.Extensions.Options;
 
 namespace EventsBookingBackend.Application.Services.Auth;
 
