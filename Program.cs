@@ -1,14 +1,7 @@
 using System.Globalization;
-using System.Security.Claims;
 using EventsBookingBackend.DependencyInjections;
 using EventsBookingBackend.Infrastructure.Payment.Payme.DI;
-using EventsBookingBackend.Infrastructure.Persistence.DbContexts;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.BearerToken;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -54,11 +47,11 @@ var app = builder.Build();
 app.UseCors("AllowEverything");
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI(c => c.DisplayRequestDuration());
-}
+// if (app.Environment.IsDevelopment())
+// {
+app.UseSwagger();
+app.UseSwaggerUI(c => c.DisplayRequestDuration());
+// }
 
 // Configure the HTTP request pipeline.
 var supportedCultures = new[] { new CultureInfo("ru-RU") };
@@ -71,7 +64,6 @@ app.UseRequestLocalization(new RequestLocalizationOptions
 
 
 app.UseStaticFiles();
-
 app.UseMiddlewares();
 
 app.UseHttpsRedirection();
@@ -80,5 +72,7 @@ app.UseAuthorization();
 app.UseAuthentication();
 
 app.MapControllers();
+
+await app.UseMigration();
 
 app.Run();

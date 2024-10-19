@@ -61,7 +61,7 @@ public static class InfrastructureDi
     public static void AddDatabases(this IServiceCollection services, IConfiguration configuration)
     {
         var connectionString = configuration.GetValue<string>("Database:Postgresql:ConnectionString");
-
+        Console.WriteLine($"Connection string: {connectionString}");
         services.AddDbContextPool<UserDbContext>(options =>
             options.UseNpgsql(connectionString,
                     x =>
@@ -105,6 +105,46 @@ public static class InfrastructureDi
                     x.MigrationsHistoryTable(HistoryRepository.DefaultTableName,
                         schema: "payme"))
                 .UseSnakeCaseNamingConvention());
+    }
+
+    public static async Task UseMigration(this IHost app)
+    {
+        using (var scope = app.Services.CreateAsyncScope())
+        {
+            var services = scope.ServiceProvider;
+
+            // Migrate UserDbContext
+            using var userContext = services.GetRequiredService<UserDbContext>();
+            userContext.Database.Migrate();
+
+            // Migrate ReviewDbContext
+            using var reviewContext = services.GetRequiredService<ReviewDbContext>();
+            reviewContext.Database.Migrate();
+
+            // Migrate EventDbContext
+            using var eventContext = services.GetRequiredService<EventDbContext>();
+            eventContext.Database.Migrate();
+
+            // Migrate CategoryDbContext
+            using var categoryContext = services.GetRequiredService<CategoryDbContext>();
+            categoryContext.Database.Migrate();
+
+            // Migrate BookingDbContext
+            using var bookingContext = services.GetRequiredService<BookingDbContext>();
+            bookingContext.Database.Migrate();
+
+            // Migrate AuthDbContext
+            using var authContext = services.GetRequiredService<AuthDbContext>();
+            authContext.Database.Migrate();
+
+            // Migrate FileDbContext
+            using var fileContext = services.GetRequiredService<FileDbContext>();
+            fileContext.Database.Migrate();
+
+            // Migrate PaymeDbContext
+            using var paymeContext = services.GetRequiredService<PaymeDbContext>();
+            paymeContext.Database.Migrate();
+        }
     }
 
     public static void AddRepositories(this IServiceCollection services)

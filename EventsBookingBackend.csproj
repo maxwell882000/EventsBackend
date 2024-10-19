@@ -8,43 +8,28 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="AutoMapper" Version="13.0.1" />
-        <PackageReference Include="Coravel" Version="5.0.4" />
-        <PackageReference Include="EFCore.NamingConventions" Version="8.0.3" />
-        <PackageReference Include="Microsoft.AspNet.Identity.Core.ru" Version="2.2.4" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.8" />
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.8" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="8.0.8" />
+        <PackageReference Include="AutoMapper" Version="13.0.1"/>
+        <PackageReference Include="Coravel" Version="5.0.4"/>
+        <PackageReference Include="EFCore.NamingConventions" Version="8.0.3"/>
+        <PackageReference Include="Microsoft.AspNet.Identity.Core.ru" Version="2.2.4"/>
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.8"/>
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.8"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="8.0.8"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.8">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.Extensions.Localization" Version="8.0.8" />
-        <PackageReference Include="Npgsql" Version="8.0.3" />
-        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4" />
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+        <PackageReference Include="Microsoft.Extensions.Localization" Version="8.0.8"/>
+        <PackageReference Include="Npgsql" Version="8.0.3"/>
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4"/>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Application\Models\Category\Requests\" />
-      <Folder Include="Application\Models\User\Requests\" />
-      <Folder Include="Domain\Auth\Services\" />
-      <Folder Include="Domain\Category\Services\" />
-      <Folder Include="Domain\Event\Services\" />
-      <Folder Include="Domain\Review\Services\" />
-      <Folder Include="Domain\User\Services\" />
-      <Folder Include="Infrastructure\Redis\" />
-      <Folder Include="Infrastructure\Services\Category\" />
-      <Folder Include="Infrastructure\Services\Event\" />
-      <Folder Include="Infrastructure\Services\Review\" />
-      <Folder Include="Infrastructure\Services\User\" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <_ContentIncludedByDefault Remove="EventsBookingBackendTest\obj\EventsBookingBackendTest.csproj.nuget.dgspec.json" />
-      <_ContentIncludedByDefault Remove="EventsBookingBackendTest\obj\project.assets.json" />
-      <_ContentIncludedByDefault Remove="EventsBookingBackendTest\obj\project.packagespec.json" />
+        <_ContentIncludedByDefault Remove="EventsBookingBackendTest\obj\EventsBookingBackendTest.csproj.nuget.dgspec.json"/>
+        <_ContentIncludedByDefault Remove="EventsBookingBackendTest\obj\project.assets.json"/>
+        <_ContentIncludedByDefault Remove="EventsBookingBackendTest\obj\project.packagespec.json"/>
     </ItemGroup>
 
 </Project>
